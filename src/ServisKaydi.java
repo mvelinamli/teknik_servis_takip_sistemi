@@ -26,17 +26,20 @@ public class ServisKaydi {
         this.ucret = ucret;
     }
     public String getGirisTarihi(){
+        System.out.println(girisTarihi);
         return girisTarihi;
     }
     public String getCikisTarihi(){
+        System.out.println(cikisTarihi);
         return cikisTarihi;
     }
     public String getDurum(){
+        System.out.println(durum);
         return durum = durum;
     }
     public double getUcret(){
+        System.out.println(ucret);
         return ucret = ucret;
     }
-
 
 }
