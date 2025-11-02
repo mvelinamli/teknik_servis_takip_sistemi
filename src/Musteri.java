@@ -9,17 +9,17 @@ public class Musteri {
     public int getMusteriId() {
         return musteriId;
     }
-    public void setAdSoyad(){
+    public void setAdSoyad(String adSoyad){
         this.adSoyad = adSoyad;
     }
-    public void setTelefon(){
+    public void setTelefon(String telefon){
         this.telefon = telefon;
     }
-    public void setAdres(){
+    public void setAdres(String adres){
         this.adres=adres;
     }
-    public void setMail(){
-        this.setMail();
+    public void setMail(String mail){
+        this.mail = mail;
     }
     public String getAdSoyad(){
         return adSoyad;
