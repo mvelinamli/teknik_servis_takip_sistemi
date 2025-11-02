@@ -6,14 +6,14 @@ public class Cihaz {
 	public String markaModel;
 	public String arizaTanimi;
 	//SETTER PART//
-	public void setSeriNo(String SeriNo) {
-		String seriNo= SeriNo;
+	public void setSeriNo(String seriNo) {
+		this.seriNo= seriNo;
 	}
-	public void setMarkaModel(String MarkaModel) {
-		String markaModel= MarkaModel;
+	public void setMarkaModel(String markaModel) {
+		this.markaModel= markaModel;
 	}
-	public void setArizaTanimi(String ArizaTanimi) {
-		String sahipMusteriId= seriNo;
+	public void setArizaTanimi(String arizaTanimi) {
+		this.arizaTanimi= arizaTanimi;
 	}
 	//GET PART//
 	public void getCihazId() {
