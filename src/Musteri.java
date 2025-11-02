@@ -5,6 +5,7 @@ public class Musteri {
     private String telefon;
     private String adres;
     private String mail;
+    Musteri next;
 
     public int getMusteriId() {
         System.out.println(musteriId);
