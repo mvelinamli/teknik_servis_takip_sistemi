@@ -5,5 +5,7 @@ public class ServisYoneticisi {
 		cihaz.setSeriNo(null);
 		cihaz.setMarkaModel(null);
 		
+	public void cihazBul(int cihazId) {
 		
+	}
 }
