@@ -2,6 +2,7 @@ package model;
 
 import java.util.Scanner;
 
+
 public class ServisYoneticisi {
     Musteri head = null;
     Musteri tail = null;
@@ -76,7 +77,45 @@ public class ServisYoneticisi {
     }
 
     public void musteriGuncelle(int musteriId) {
-
+        int n=0;
+        Scanner input1 = new Scanner(System.in);
+        Musteri temp =head;
+        while(temp!=null) {
+            if (temp.getMusteriId()==musteriId) {
+            	System.out.println("Güncellemek istediğiniz musteri bilgisini seçiniz: \n1 Ad soyad \n2 Adres \n3 Telefon numarası \n4 Mail");
+            	int bilgi= input1.nextInt();
+            	for(int i=0;i<5;i++) {
+            		if (i==bilgi && i==1) {
+            			System.out.println("Yeni ad ve soyadı giriniz:");
+            			String ad= input1.nextLine();
+            			temp.setAdSoyad(ad);
+            		}
+            		else if (i==bilgi && i==2) {
+            			System.out.println("Yeni adresi giriniz:");
+            			String adres= input1.nextLine();
+            			temp.setAdres(adres);
+            		}
+            		else if (i==bilgi && i==bilgi) {
+            			System.out.println("Yeni telefon numarasını giriniz:");
+            			String ad= input1.nextLine();
+            			temp.setTelefon(ad);
+            		}
+            		else if (i==4 && i==bilgi ) {
+            			System.out.println("Yeni mail giriniz:");
+            			String ad= input1.nextLine();
+            			temp.setMail(ad);
+            		}
+            	}
+            	
+            }
+            temp=temp.next;
+            n++;
+            if (temp==null) {
+            	System.out.println("Aradığınız musteri id'si bulunamadı.");
+            }
+        }
+        System.out.println();
+        
     }
 
     public void yeniServisKaydiOlustur(ServisKaydi servisKaydi) {
