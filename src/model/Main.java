@@ -9,6 +9,7 @@ public class Main {
         servisKaydi.getGirisTarihi();
 
         servisYoneticisi.musteriEkle();
+        servisYoneticisi.musteriBul(1);
 
 
     }
