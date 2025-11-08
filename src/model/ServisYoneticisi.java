@@ -14,7 +14,7 @@ public class ServisYoneticisi {
     }
 
     public void cihazBul(int cihazId) {
-    	
+
     }
 
     public void verileriYukle(String dosyaAdi) {
@@ -26,16 +26,16 @@ public class ServisYoneticisi {
     }
 
     public void musteriEkle() {
-    	Scanner input = new Scanner(System.in);
-    	System.out.print("Adınızı girin: ");
-        String adSoyad= input.nextLine();
+        Scanner input = new Scanner(System.in);
+        System.out.print("Adınızı girin: ");
+        String adSoyad = input.nextLine();
         System.out.print("numaranızı girin: ");
-        String telefonNo= input.nextLine();
+        String telefonNo = input.nextLine();
         System.out.print("adres girin: ");
-        String adres= input.nextLine();
+        String adres = input.nextLine();
         System.out.print("mail girin: ");
-        String mail= input.nextLine();
-        Musteri newMusteri = new Musteri(adSoyad,telefonNo,adres,mail);
+        String mail = input.nextLine();
+        Musteri newMusteri = new Musteri(adSoyad, telefonNo, adres, mail);
 
 
         if (head == null) {
