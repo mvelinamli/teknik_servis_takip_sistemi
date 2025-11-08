@@ -11,6 +11,6 @@ public class Main {
         servisYoneticisi.musteriEkle();
         servisYoneticisi.musteriBul(1);
 
-
+        servisYoneticisi.musteriBul(1);
     }
 }

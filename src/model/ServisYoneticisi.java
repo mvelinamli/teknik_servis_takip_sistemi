@@ -8,11 +8,31 @@ public class ServisYoneticisi {
     Musteri tail = null;
     Cihaz head1 = null;
     Cihaz tail1= null;
+
     public void cihazEkle() {
-        Cihaz cihaz = new Cihaz();
-        cihaz.setArizaTanimi(null);
-        cihaz.setSeriNo(null);
-        cihaz.setMarkaModel(null);
+        Scanner input = new Scanner(System.in);
+        System.out.print("Cihaz  marka/model: ");
+        String markaModel= input.nextLine();
+        System.out.print("Cihaz seri numarasını girin: ");
+        String seriNo= input.nextLine();
+        System.out.print("Arıza tanımı?: ");
+        String arizaTanimi= input.nextLine();
+        System.out.print("Cihaz sahibinin id: ");
+        String sahipMusteriId= input.nextLine();
+        Cihaz newCihaz = new Cihaz(markaModel,seriNo,arizaTanimi,sahipMusteriId);
+
+        if (head == null) {
+            newCihaz.next = null;
+            head1 = newCihaz;
+            tail1 = newCihaz;
+            System.out.println("Liste yapisi olusturuldu ve yeni cihaz eklendi");
+        } else {
+            newCihaz.next = null;
+            tail1.next = newCihaz;
+            tail1 = newCihaz;
+            System.out.println("Sona yeni Musteri eklendi");
+
+        }
     }
 
     public void cihazBul(int cihazId) {
