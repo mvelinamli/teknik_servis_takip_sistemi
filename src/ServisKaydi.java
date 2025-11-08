@@ -1,11 +1,11 @@
 public class ServisKaydi {
 
-    int kayitId;
-    int cihazId;
-    String girisTarihi;
-    String cikisTarihi;
-    String durum;
-    double ucret;
+    private int kayitId;
+    private int cihazId;
+    private String girisTarihi;
+    private String cikisTarihi;
+    private String durum;
+    private double ucret;
 
     public int getKayitId(){
         return kayitId;
