@@ -7,10 +7,7 @@ public class ServisYoneticisi {
     Musteri tail = null;
 
     public void cihazEkle() {
-        Cihaz cihaz = new Cihaz();
-        cihaz.setArizaTanimi(null);
-        cihaz.setSeriNo(null);
-        cihaz.setMarkaModel(null);
+
     }
 
     public void cihazBul(int cihazId) {
@@ -58,7 +55,7 @@ public class ServisYoneticisi {
         Musteri temp =head;
         while(temp!=null) {
             if (temp.getMusteriId()==musteriId) {
-                System.out.println(n+". indiste "+musteriId+" değeri bulunuyor.");
+                System.out.println(n+". indiste "+musteriId+" değeri bulunuyor.\n"+"Musterinin adı soyadı: "+temp.getAdSoyad()+"\nMusterinin adresi: "+temp.getAdres()+"\nMusterinin telefon numarası: "+temp.getTelefon()+"\nMusterinin maili: "+temp.getMail());
             }
             temp=temp.next;
             n++;
