@@ -1,18 +1,5 @@
 public class ServisYoneticisi {
-<<<<<<< HEAD
 
-	
-	public void cihazEkle() {
-		Cihaz cihaz= new Cihaz();
-		cihaz.setArizaTanimi(null);
-		cihaz.setSeriNo(null);
-		cihaz.setMarkaModel(null);
-		
-	}
-	public void cihazBul(int cihazId) {
-		
-	}
-=======
   	public void cihazEkle() {
         Cihaz cihaz = new Cihaz();
         cihaz.setArizaTanimi(null);
