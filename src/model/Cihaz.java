@@ -8,7 +8,7 @@ public class Cihaz {
     public String markaModel;
     public String arizaTanimi;
     
-    public Cihaz(int sahipMusteriId, String seriNo, String markaModel,String arizaTanimi) {
+    public Cihaz() {
     	this.cihazId=sayac++;
     	this.sahipMusteriId=sahipMusteriId;
     	this.seriNo=seriNo;
