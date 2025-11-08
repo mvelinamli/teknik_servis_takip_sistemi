@@ -5,7 +5,8 @@ import java.util.Scanner;
 public class ServisYoneticisi {
     Musteri head = null;
     Musteri tail = null;
-
+    Cihaz head1 = null;
+    Cihaz tail1= null;
     public void cihazEkle() {
         Cihaz cihaz = new Cihaz();
         cihaz.setArizaTanimi(null);
@@ -14,6 +15,15 @@ public class ServisYoneticisi {
     }
 
     public void cihazBul(int cihazId) {
+        int n=0;
+        Cihaz temp =head1;
+        while(temp!=null) {
+            if (temp.cihazId()=cihazId) {
+                  System.out.println(n+". indiste "+cihazId+" değeri bulunuyor.\n"+"Musterinin adı soyadı: "+temp.getAdSoyad()+"\n Musterinin adresi: "+temp.getAdres()+"\n Musterinin telefon numarası: "+temp.getTelefon()+"\n Musterinin maili: "+temp.getMail());
+            }
+            temp=temp.next;
+            n++;
+        }
     	
     }
 
@@ -54,11 +64,10 @@ public class ServisYoneticisi {
 
     public void musteriBul(int musteriId) {
         int n=0;
-
         Musteri temp =head;
         while(temp!=null) {
             if (temp.getMusteriId()==musteriId) {
-                System.out.println(n+". indiste "+musteriId+" değeri bulunuyor.\n"+"Musterinin adı soyadı: "+temp.getAdSoyad()+"\n Musterinin adresi: "+temp.getAdres()+"\n Musterinin telefon numarası: "+temp.getTelefon()+"\n Musterinin maili: "+temp.getMail());
+                  System.out.println(n+". indiste "+musteriId+" değeri bulunuyor.\n"+"Musterinin adı soyadı: "+temp.getAdSoyad()+"\n Musterinin adresi: "+temp.getAdres()+"\n Musterinin telefon numarası: "+temp.getTelefon()+"\n Musterinin maili: "+temp.getMail());
             }
             temp=temp.next;
             n++;

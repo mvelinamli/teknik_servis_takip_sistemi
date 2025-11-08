@@ -7,6 +7,7 @@ public class Cihaz {
     public String seriNo;
     public String markaModel;
     public String arizaTanimi;
+    Cihaz next;
     
     public Cihaz(int sahipMusteriId, String seriNo, String markaModel, String arizaTanimi) {
     	this.cihazId=sayac++;
