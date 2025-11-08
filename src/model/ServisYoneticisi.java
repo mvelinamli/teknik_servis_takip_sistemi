@@ -102,39 +102,40 @@ public class ServisYoneticisi {
         Musteri temp =head;
         while(temp!=null) {
             if (temp.getMusteriId()==musteriId) {
-            	System.out.println("Güncellemek istediğiniz musteri bilgisini seçiniz: \n1 Ad soyad \n2 Adres \n3 Telefon numarası \n4 Mail");
-            	int bilgi= input1.nextInt();
-            	for(int i=0;i<5;i++) {
-            		if (i==bilgi && i==1) {
-            			System.out.println("Yeni ad ve soyadı giriniz:");
-            			String ad= input1.nextLine();
-            			temp.setAdSoyad(ad);
-            		}
-            		else if (i==bilgi && i==2) {
-            			System.out.println("Yeni adresi giriniz:");
-            			String adres= input1.nextLine();
-            			temp.setAdres(adres);
-            		}
-            		else if (i==bilgi && i==bilgi) {
-            			System.out.println("Yeni telefon numarasını giriniz:");
-            			String ad= input1.nextLine();
-            			temp.setTelefon(ad);
-            		}
-            		else if (i==4 && i==bilgi ) {
-            			System.out.println("Yeni mail giriniz:");
-            			String ad= input1.nextLine();
-            			temp.setMail(ad);
-            		}
+            	System.out.println("Güncellemek istediğiniz müşteri bilgisini seçiniz: \n1 Ad soyad \n2 Adres \n3 Telefon numarası \n4 Mail");
+            	int bilgi = input1.nextInt();
+            	input1.nextLine(); // enter karakterini al
+
+            	switch (bilgi) {
+            	    case 1:
+            	        System.out.print("Yeni ad ve soyadı giriniz: ");
+            	        String ad = input1.nextLine();
+            	        temp.setAdSoyad(ad);
+            	        break;
+            	    case 2:
+            	        System.out.print("Yeni adresi giriniz: ");
+            	        String adres = input1.nextLine();
+            	        temp.setAdres(adres);
+            	        break;
+            	    case 3:
+            	        System.out.print("Yeni telefon numarasını giriniz: ");
+            	        String telefon = input1.nextLine();
+            	        temp.setTelefon(telefon);
+            	        break;
+            	    case 4:
+            	        System.out.print("Yeni mail adresini giriniz: ");
+            	        String mail = input1.nextLine();
+            	        temp.setMail(mail);
+            	        break;
+            	    default:
+            	        System.out.println("Geçersiz seçim!");
             	}
+
             	
             }
             temp=temp.next;
             n++;
-            if (temp==null) {
-            	System.out.println("Aradığınız musteri id'si bulunamadı.");
-            }
         }
-        System.out.println();
         
     }
 
