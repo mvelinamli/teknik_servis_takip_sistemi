@@ -21,11 +21,8 @@ public class Cihaz {
     	this.seriNo=seriNo;
     	this.markaModel=markaModel;
     	this.arizaTanimi=arizaTanimi;
-    	
     }
-    
-    
-    
+
     //SETTER PART//
     public void setSeriNo(String seriNo) {
         this.seriNo= seriNo;

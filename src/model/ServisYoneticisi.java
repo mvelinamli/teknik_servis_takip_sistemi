@@ -23,8 +23,22 @@ public class ServisYoneticisi {
 
     }
 
-    public void musteriEkle(Musteri musteri) {
+    public void musteriEkle() {
+        Musteri newMusteri = new Musteri();
+        newMusteri.getAdSoyad();
 
+        if (head == null) {
+            newMusteri.next = null;
+            head = newMusteri;
+            tail = newMusteri;
+            System.out.println("Liste yapisi olusturuldu ve newMusteri eklendi");
+        } else {
+            newMusteri.next = null;
+            tail.next = newMusteri;
+            tail = newMusteri;
+            System.out.println("Sona newMusteri eklendi");
+
+        }
     }
 
     public void musteriBul(int musteriId) {
