@@ -24,21 +24,7 @@ public class ServisYoneticisi {
     }
 
     public void musteriEkle(Musteri musteri) {
-        Node eleman = new Node();
-        eleman.data = x;
 
-        if (head == null) {
-            eleman.next = null;
-            head = eleman;
-            tail = eleman;
-            System.out.println("Liste yapisi olusturuldu ve eleman eklendi");
-        } else {
-            eleman.next = null;
-            tail.next = eleman;
-            tail = eleman;
-            System.out.println("Sona eleman eklendi");
-
-        }
     }
 
     public void musteriBul(int musteriId) {
