@@ -12,7 +12,7 @@ public class ServisYoneticisi {
     }
 
     public void cihazBul(int cihazId) {
-
+    	
     }
 
     public void verileriYukle(String dosyaAdi) {
