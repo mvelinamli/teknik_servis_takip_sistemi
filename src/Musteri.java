@@ -39,6 +39,4 @@ public class Musteri {
         System.out.println(mail);
         return mail;
     }
-
-
 }

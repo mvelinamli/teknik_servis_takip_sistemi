@@ -6,7 +6,7 @@ public class Musteri {
     private String telefon;
     private String adres;
     private String mail;
-    
+    Musteri next;
 
     public int getMusteriId() {
         System.out.println(musteriId);
@@ -40,6 +40,5 @@ public class Musteri {
         System.out.println(mail);
         return mail;
     }
-
-
 }
+
