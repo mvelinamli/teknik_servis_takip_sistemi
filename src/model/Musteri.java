@@ -1,3 +1,4 @@
+package model;
 public class Musteri {
 
     private int musteriId;

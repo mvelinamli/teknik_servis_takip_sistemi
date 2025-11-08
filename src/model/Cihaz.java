@@ -1,3 +1,4 @@
+package model;
 
 public class Cihaz extends Musteri {
 	public int cihazId;
