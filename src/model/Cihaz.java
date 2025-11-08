@@ -1,10 +1,12 @@
+package model;
 
-public class Cihaz {
+public class Cihaz extends Musteri {
 	public int cihazId;
-	public int sahipMusteriId;
+	//public int sahipMusteriId;
 	public String seriNo;
 	public String markaModel;
 	public String arizaTanimi;
+	Cihaz next;
 	//SETTER PART//
 	public void setSeriNo(String seriNo) {
 		this.seriNo= seriNo;
@@ -19,9 +21,9 @@ public class Cihaz {
 	public void getCihazId() {
 		System.out.println(cihazId);
 	}
-	public void getSahipMusteriId() {
+	/*public void getSahipMusteriId() {
 		System.out.println(sahipMusteriId);
-	}
+	}*/
 	public void getSeriNo() {
 		System.out.println(seriNo);
 	}

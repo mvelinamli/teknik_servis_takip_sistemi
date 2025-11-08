@@ -1,4 +1,5 @@
 public class ServisYoneticisi {
+
   	public void cihazEkle() {
         Cihaz cihaz = new Cihaz();
         cihaz.setArizaTanimi(null);
@@ -35,4 +36,5 @@ public class ServisYoneticisi {
     public void kayitlariFiltrele(String durum){
 
     }
+>>>>>>> 88d5096ada6173bc9e9d4e9dfe27f15d36e9a1db
 }

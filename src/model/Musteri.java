@@ -1,3 +1,4 @@
+package model;
 public class Musteri {
 
     private int musteriId;
@@ -5,8 +6,8 @@ public class Musteri {
     private String telefon;
     private String adres;
     private String mail;
-    Musteri next;
     
+
     public int getMusteriId() {
         System.out.println(musteriId);
         return musteriId;
