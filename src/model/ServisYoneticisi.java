@@ -19,7 +19,7 @@ public class ServisYoneticisi {
         Cihaz temp =head1;
         while(temp!=null) {
             if (temp.getCihazId()==cihazId) {
-                  System.out.println(n+". indiste "+cihazId+" değeri bulunuyor.\n"+"Musterinin adı soyadı: "+temp.getAdSoyad()+"\n Musterinin adresi: "+temp.getAdres()+"\n Musterinin telefon numarası: "+temp.getTelefon()+"\n Musterinin maili: "+temp.getMail());
+                  System.out.println(n+". indiste "+cihazId+" değeri bulunuyor.\n"+"cihazın sahibinin id si"+temp.getSahipMusteriId()+"\n Cihaz seri no: "+temp.getSeriNo()+"\n Cihaz marka ve modeli: "+temp.getMarkaModel()+"\nCihazın arızası: "+temp.getArizaTanimi());
             }
             temp=temp.next;
             n++;
