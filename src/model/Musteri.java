@@ -15,6 +15,13 @@ public class Musteri {
         this.adres = adres;
         this.mail = mail;
     }
+    public Musteri() {
+        this.musteriId = ++sayac; // Yeni müşteri oluşturuldukça ID 1 artar
+        this.adSoyad = adSoyad;
+        this.telefon = telefon;
+        this.adres = adres;
+        this.mail = mail;
+    }
 
     public int getMusteriId() {
         System.out.println(musteriId);
