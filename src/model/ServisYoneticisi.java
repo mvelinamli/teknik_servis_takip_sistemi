@@ -35,7 +35,6 @@ public class ServisYoneticisi {
         String adres= input.nextLine();
         System.out.print("mail girin: ");
         String mail= input.nextLine();
-
         Musteri newMusteri = new Musteri(adSoyad,telefonNo,adres,mail);
 
 
