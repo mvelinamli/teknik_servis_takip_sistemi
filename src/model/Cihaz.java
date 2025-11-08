@@ -8,13 +8,22 @@ public class Cihaz {
     public String markaModel;
     public String arizaTanimi;
     
-    public Cihaz() {
+    public Cihaz(int sahipMusteriId, String seriNo, String markaModel, String arizaTanimi) {
     	this.cihazId=sayac++;
     	this.sahipMusteriId=sahipMusteriId;
     	this.seriNo=seriNo;
     	this.markaModel=markaModel;
     	this.arizaTanimi=arizaTanimi;
     }
+    public Cihaz() {
+       	this.cihazId=sayac++;
+    	this.sahipMusteriId=sahipMusteriId;
+    	this.seriNo=seriNo;
+    	this.markaModel=markaModel;
+    	this.arizaTanimi=arizaTanimi;
+    	
+    }
+    
     
     
     //SETTER PART//
