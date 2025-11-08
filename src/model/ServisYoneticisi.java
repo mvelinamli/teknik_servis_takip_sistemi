@@ -53,6 +53,16 @@ public class ServisYoneticisi {
     }
 
     public void musteriBul(int musteriId) {
+        int n=0;
+
+        Musteri temp =head;
+        while(temp!=null) {
+            if (temp.getMusteriId()==musteriId) {
+                System.out.println(n+". indiste "+musteriId+" değeri bulunuyor.");
+            }
+            temp=temp.next;
+            n++;
+        }
 
     }
 
