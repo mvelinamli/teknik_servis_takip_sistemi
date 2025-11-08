@@ -58,7 +58,7 @@ public class ServisYoneticisi {
         Musteri temp =head;
         while(temp!=null) {
             if (temp.getMusteriId()==musteriId) {
-                System.out.println(n+". indiste "+musteriId+" değeri bulunuyor."+temp.getAdres());
+                System.out.println(n+". indiste "+musteriId+" değeri bulunuyor.\n"+"Musterinin adı soyadı: "+temp.getAdSoyad()+"\n Musterinin adresi: "+temp.getAdres()+"\n Musterinin telefon numarası: "+temp.getTelefon()+"\n Musterinin maili: "+temp.getMail());
             }
             temp=temp.next;
             n++;
