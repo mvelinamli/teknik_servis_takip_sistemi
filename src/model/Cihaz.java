@@ -7,6 +7,7 @@ public class Cihaz {
     public String seriNo;
     public String markaModel;
     public String arizaTanimi;
+    Cihaz next;
     
     public Cihaz(int sahipMusteriId, String seriNo, String markaModel, String arizaTanimi) {
     	this.cihazId=sayac++;
@@ -26,28 +27,35 @@ public class Cihaz {
     //SETTER PART//
     public void setSeriNo(String seriNo) {
         this.seriNo= seriNo;
+        
     }
     public void setMarkaModel(String markaModel) {
         this.markaModel= markaModel;
+        
     }
     public void setArizaTanimi(String arizaTanimi) {
         this.arizaTanimi= arizaTanimi;
     }
     //GET PART//
-    public void getCihazId() {
+    public int getCihazId() {
         System.out.println(cihazId);
+        return cihazId;
     }
-    public void getSahipMusteriId() {
+    public int getSahipMusteriId() {
         System.out.println(sahipMusteriId);
+        return sahipMusteriId;
     }
-    public void getSeriNo() {
+    public String getSeriNo() {
         System.out.println(seriNo);
+        return seriNo;
     }
-    public void getMarkaModel() {
+    public String getMarkaModel() {
         System.out.println(markaModel);
+        return markaModel;
     }
-    public void getArizaTanimi() {
+    public String getArizaTanimi() {
         System.out.println(arizaTanimi);
+        return arizaTanimi;
     }
 
 
