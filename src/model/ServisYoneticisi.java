@@ -2,6 +2,7 @@ package model;
 
 import java.util.Scanner;
 
+
 public class ServisYoneticisi {
     Musteri head = null;
     Musteri tail = null;
@@ -96,7 +97,46 @@ public class ServisYoneticisi {
     }
 
     public void musteriGuncelle(int musteriId) {
+        int n=0;
+        Scanner input1 = new Scanner(System.in);
+        Musteri temp =head;
+        while(temp!=null) {
+            if (temp.getMusteriId()==musteriId) {
+            	System.out.println("Güncellemek istediğiniz müşteri bilgisini seçiniz: \n1 Ad soyad \n2 Adres \n3 Telefon numarası \n4 Mail");
+            	int bilgi = input1.nextInt();
+            	input1.nextLine(); // enter karakterini al
 
+            	switch (bilgi) {
+            	    case 1:
+            	        System.out.print("Yeni ad ve soyadı giriniz: ");
+            	        String ad = input1.nextLine();
+            	        temp.setAdSoyad(ad);
+            	        break;
+            	    case 2:
+            	        System.out.print("Yeni adresi giriniz: ");
+            	        String adres = input1.nextLine();
+            	        temp.setAdres(adres);
+            	        break;
+            	    case 3:
+            	        System.out.print("Yeni telefon numarasını giriniz: ");
+            	        String telefon = input1.nextLine();
+            	        temp.setTelefon(telefon);
+            	        break;
+            	    case 4:
+            	        System.out.print("Yeni mail adresini giriniz: ");
+            	        String mail = input1.nextLine();
+            	        temp.setMail(mail);
+            	        break;
+            	    default:
+            	        System.out.println("Geçersiz seçim!");
+            	}
+
+            	
+            }
+            temp=temp.next;
+            n++;
+        }
+        
     }
 
     public void yeniServisKaydiOlustur(ServisKaydi servisKaydi) {
