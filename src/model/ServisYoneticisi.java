@@ -100,7 +100,7 @@ public class ServisYoneticisi {
     }
 
     public void yeniServisKaydiOlustur(ServisKaydi servisKaydi) {
-
+        // musteri ve servis kaydi ayni anda saklanacak. Aradaki ilişki nasıl kurulacak??
     }
 
     public void onarimdakiIsiGetir() {
