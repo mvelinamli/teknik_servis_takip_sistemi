@@ -87,9 +87,12 @@ public class Cihaz {
         this.arizaTanimi = arizaTanimi;
     }
 
+
     // --- TOSTRING (Test ederken yazdırmak için) ---
     @Override
     public String toString() {
         return "Cihaz [ID=" + cihazId + ", Marka=" + markaModel + ", SeriNo=" + seriNo + "]";
     }
+
+    public void bstSilmeIcinIdGuncelle(int id) { this.cihazId = id; }
 }

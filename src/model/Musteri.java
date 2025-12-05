@@ -47,8 +47,19 @@ public class Musteri {
 
     public String getMail() { return mail; }
 
+    public void setAdSoyad(String adSoyad) { this.adSoyad = adSoyad; }
+
+    public void setTelefon(String telefon) { this.telefon = telefon; }
+
+    public void setAdres(String adres) { this.adres = adres; }
+
+    public void setMail(String mail) { this.mail = mail; }
+
     // toString metodu (Test ederken yazdırmak için çok faydalıdır)
     public String toString() {
         return "Musteri: " + adSoyad + " (ID: " + musteriId + ")";
     }
+
+    // Sadece BST silme işlemi için kullanılır!
+    public void bstSilmeIcinIdGuncelle(int id) { this.musteriId = id; }
 }

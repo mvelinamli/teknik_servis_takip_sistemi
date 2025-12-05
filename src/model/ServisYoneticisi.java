@@ -163,4 +163,51 @@ public class ServisYoneticisi {
             System.out.println("Dosya okuma hatası: " + e.getMessage());
         }
     }
+
+    // --- GÜNCELLEME METOTLARI ---
+
+    // Müşteri Güncelleme
+    public void musteriGuncelle(int id, String yeniAd, String yeniTel, String yeniAdres, String yeniMail) {
+        Musteri m = musteriBul(id);
+        if (m != null) {
+            m.setAdSoyad(yeniAd);
+            m.setTelefon(yeniTel);
+            m.setAdres(yeniAdres);
+            m.setMail(yeniMail);
+            System.out.println("Müşteri güncellendi: " + id);
+        } else {
+            System.out.println("Müşteri bulunamadı!");
+        }
+    }
+
+    // Cihaz Güncelleme
+    public void cihazGuncelle(int id, String yeniMarka, String yeniSeri, String yeniAriza) {
+        Cihaz c = cihazBul(id);
+        if (c != null) {
+            c.setMarkaModel(yeniMarka);
+            c.setSeriNo(yeniSeri);
+            c.setArizaTanimi(yeniAriza);
+            System.out.println("Cihaz güncellendi: " + id);
+        }
+    }
+
+    // --- SİLME METOTLARI ---
+
+    public void musteriSil(int id) {
+        musterilerAgaci.sil(id);
+        System.out.println("Müşteri silindi (Varsa): " + id);
+        // Not: Gerçek senaryoda bu müşteriye ait cihazları da silmek gerekebilir.
+    }
+
+    public void cihazSil(int id) {
+        cihazlarAgaci.sil(id);
+        System.out.println("Cihaz silindi (Varsa): " + id);
+    }
+
+    public void servisKaydiSil(int id) {
+        // Hem arşivden hem kuyruktan silmeyi dene
+        tumKayitlar.sil(id);
+        onarimKuyrugu.sil(id); // Kuyrukta varsa oradan da siler
+        System.out.println("Kayıt silindi: " + id);
+    }
 }

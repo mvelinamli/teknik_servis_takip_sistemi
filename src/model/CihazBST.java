@@ -51,5 +51,38 @@ public class CihazBST {
             yazRecursive(node.sag, writer);
         }
     }
+    public void sil(int id) {
+        kok = silRecursive(kok, id);
+    }
+
+    private Cihaz silRecursive(Cihaz kok, int id) {
+        if (kok == null) return kok;
+
+        if (id < kok.getCihazId()) kok.sol = silRecursive(kok.sol, id);
+        else if (id > kok.getCihazId()) kok.sag = silRecursive(kok.sag, id);
+        else {
+            if (kok.sol == null) return kok.sag;
+            else if (kok.sag == null) return kok.sol;
+
+            Cihaz successor = enKucuguBul(kok.sag);
+            veriKopyala(kok, successor);
+            kok.sag = silRecursive(kok.sag, successor.getCihazId());
+        }
+        return kok;
+    }
+
+    private Cihaz enKucuguBul(Cihaz kok) {
+        Cihaz min = kok;
+        while (min.sol != null) min = min.sol;
+        return min;
+    }
+
+    private void veriKopyala(Cihaz hedef, Cihaz kaynak) {
+        hedef.setMarkaModel(kaynak.getMarkaModel());
+        hedef.setSeriNo(kaynak.getSeriNo());
+        hedef.setArizaTanimi(kaynak.getArizaTanimi());
+        // Cihaz.java'ya da bstSilmeIcinIdGuncelle eklemeyi unutmayın!
+        hedef.bstSilmeIcinIdGuncelle(kaynak.getCihazId());
+    }
 
 }

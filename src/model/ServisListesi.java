@@ -34,4 +34,33 @@ public class ServisListesi {
     public ServisKaydi getHead() {
         return head;
     }
+
+    // ID'ye göre listeden eleman silme
+    public void sil(int kayitId) {
+        // Liste boşsa
+        if (head == null) return;
+
+        // 1. Silinecek eleman HEAD ise
+        if (head.getKayitId() == kayitId) {
+            head = head.next;
+            if (head == null) tail = null; // Liste tamamen boşaldı
+            return;
+        }
+
+        // 2. Aradan veya sondan silme
+        ServisKaydi temp = head;
+        while (temp.next != null) {
+            if (temp.next.getKayitId() == kayitId) {
+                // Bağlantıyı atlat (Silme işlemi)
+                temp.next = temp.next.next;
+
+                // Eğer silinen eleman TAIL ise, kuyruğu güncelle
+                if (temp.next == null) {
+                    tail = temp;
+                }
+                return; // Silindi, çık
+            }
+            temp = temp.next;
+        }
+    }
 }
