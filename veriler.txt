@@ -1,0 +1,6 @@
+MUSTERI;1;Muhammed ;123;Adres Yok;mail@test.com
+MUSTERI;2;muhammed;123;Adres Yok;mail@test.com
+CIHAZ;1;Samsung Laptop;SN12345;Ekran Kırık;1
+CIHAZ;2;Samsung Laptop;SN12345;Ekran Kırık;2
+KAYIT;1;0;Onarımda;0.0
+KAYIT;2;0;Onarımda;0.0

@@ -19,6 +19,17 @@ public class Musteri {
         this.mail = mail;
     }
 
+    // Dosyadan okurken ID'yi korumak için gerekli Constructor
+    public Musteri(int id, String adSoyad, String telefon, String adres, String mail) {
+        this.musteriId = id;
+        this.adSoyad = adSoyad;
+        this.telefon = telefon;
+        this.adres = adres;
+        this.mail = mail;
+        // Sayaç güncellemesi (Çok önemli, yoksa yeni kayıtta ID çakışır)
+        if (id > sayac) sayac = id;
+    }
+
     // Getter ve Setter'lar
     public int getMusteriId() {
         return musteriId;
@@ -31,6 +42,10 @@ public class Musteri {
     public String getTelefon() {
         return telefon;
     }
+
+    public String getAdres() { return adres; }
+
+    public String getMail() { return mail; }
 
     // toString metodu (Test ederken yazdırmak için çok faydalıdır)
     public String toString() {
