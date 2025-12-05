@@ -2,39 +2,36 @@ package model;
 
 import java.io.*;
 
-// DİKKAT: java.util.TreeMap, LinkedList, Queue ARTIK YOK!
-// Sadece kendi yazdığımız sınıfları kullanıyoruz.
-
 public class ServisYoneticisi {
 
-    // Manuel Veri Yapıları
-    private MusteriBST musterilerAgaci;      // TreeMap yerine
-    private CihazBST cihazlarAgaci;          // TreeMap yerine
+    // Veri Yapıları
+    private MusteriBST musterilerAgaci;     //Musterileri id'ye göre hızlı bir şekilde bulabilmek için bir binary search tree oluşturduk.
+    private CihazBST cihazlarAgaci;     // Cihazları hızlı bulabilmek için binary search tree
 
-    private ServisListesi onarimKuyrugu;     // Queue yerine
-    private ServisListesi tumKayitlar;       // LinkedList yerine
+    private ServisListesi onarimKuyrugu;    //Tamir bekleyen cihazları sırayla (FIFO - İlk Giren İlk Çıkar) tutmak için Bağlı Liste (kuyruk yapısı kullanılarak).
+    private ServisListesi tumKayitlar;
 
     public ServisYoneticisi() {
-        // Kendi sınıflarımızı başlatıyoruz
+        // Tanımladığımız 4 veri yapısını boş olarak başlatır
         this.musterilerAgaci = new MusteriBST();
         this.cihazlarAgaci = new CihazBST();
         this.onarimKuyrugu = new ServisListesi();
         this.tumKayitlar = new ServisListesi();
     }
 
-    // --- MÜŞTERİ İŞLEMLERİ (Manuel BST) ---
+    // --- MÜŞTERİ İŞLEMLERİ ---
     public void musteriEkle(Musteri m) {
         if (m != null) {
-            musterilerAgaci.ekle(m); // Kendi metodumuz
+            musterilerAgaci.ekle(m); // MusteriBST içerisindeki ekle() metodunu çağrır.
             System.out.println("Müşteri BST'ye eklendi: " + m.getAdSoyad());
         }
     }
 
     public Musteri musteriBul(int id) {
-        return musterilerAgaci.bul(id); // Kendi metodumuz (O(log n))
+        return musterilerAgaci.bul(id); // MusteriBST içerisindeki bul() metodunu çağırır.
     }
 
-    // --- CİHAZ İŞLEMLERİ (Manuel BST) ---
+    // --- CİHAZ İŞLEMLERİ ---
     public void cihazEkle(Cihaz c) {
         if (c != null) {
             cihazlarAgaci.ekle(c);
@@ -46,26 +43,26 @@ public class ServisYoneticisi {
         return cihazlarAgaci.bul(id);
     }
 
-    // --- SERVİS VE KUYRUK İŞLEMLERİ (Manuel Liste) ---
+    // --- SERVİS VE KUYRUK İŞLEMLERİ  ---
     public void yeniServisKaydiOlustur(ServisKaydi kayit) {
         if (kayit == null) return;
 
-        // 1. Arşive ekle (Sona ekleme mantığı)
-        tumKayitlar.ekle(kayit);
+        // 1. Arşive ekle -> kayıtların asla kaybolmaması için arşive ekler.
+        tumKayitlar.ekle(kayit);    // ServisListesi içerisinden ekle() metodunu çağırıyor.
 
         // 2. Kuyruğa ekle (Sona ekleme mantığı - FIFO)
-        if (kayit.getDurum().equals("Beklemede")) {
+        if (kayit.getDurum().equals("Beklemede")) {     //equals() iki string ifadenin içeriklerinin aynı olup olmadığını kontrol ederken kullanılır. equals yerine "==" kullanılan senaryoda string içerikler aynı olsa bile hafızadaki adresler farklı olduğunda "false" dönderir.
             onarimKuyrugu.ekle(kayit);
-            System.out.println("Kayıt manuel kuyruğa eklendi ID: " + kayit.getKayitId());
+            System.out.println("Kayıt manuel kuyruğa eklendi ID: " + kayit.getKayitId());   //Sadece durumu "Beklemede" ise iş kuyruğuna ekler. Böylece teknisyen sadece bekleyen işleri görür
         }
     }
 
-    public ServisKaydi onarimdakiIsiGetir() {
-        // Kuyruğun başındakini çek (Manuel Dequeue)
+    public ServisKaydi onarimdakiIsiGetir() {   // listenin başındaki elemanı alır ve listeden sier (first in first out)
+        // Kuyruğun başındakini çek
         ServisKaydi is = onarimKuyrugu.bastanCikar();
 
         if (is != null) {
-            is.setDurum("Onarımda");
+            is.setDurum("Onarımda");    // Kuyruktan alınan işin durumunu otomatik olarak "Onarımda" yapar.
             System.out.println("İşleme alındı: " + is.getKayitId());
         } else {
             System.out.println("Kuyruk boş.");
@@ -75,21 +72,19 @@ public class ServisYoneticisi {
 
     // --- DOSYA KAYDETME ---
     public void verileriKaydet(String dosyaAdi) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dosyaAdi))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dosyaAdi /*, true*/))) {    //BufferedWriter: Verileri tek tek diske yazmak yavaştır. Bu sınıf verileri hafızada biriktirip topluca yazar
 
             // 1. Müşterileri Yaz (BST'nin kendi recursive metoduyla)
-            musterilerAgaci.dosyayaYaz(writer);
+            musterilerAgaci.dosyayaYaz(writer);     //MusteriBST içerisinden dosyayaYaz() metodunu çağırır.
 
             // 2. Cihazları Yaz (BST'nin kendi recursive metoduyla)
             cihazlarAgaci.dosyayaYaz(writer);
 
             // 3. Kayıtları Yaz (Manuel Liste üzerinde döngüyle)
-            ServisKaydi temp = tumKayitlar.getHead(); // Listenin başına git
+            ServisKaydi temp = tumKayitlar.getHead(); // Listenin başına gitmek için ServisListesi içerisinde getHead() metodunu çağırır.
             while (temp != null) {
-                // KAYIT;ID;CihazID;Durum;Ucret
-                String satir = "KAYIT;" + temp.getKayitId() + ";" +
-                        temp.getCihazId() + ";" + temp.getDurum() + ";" +
-                        temp.getUcret();
+                // KAYIT;ID;CihazID;Durum;Ucret -> format
+                String satir = "KAYIT;" + temp.getKayitId() + ";" + temp.getCihazId() + ";" + temp.getDurum() + ";" + temp.getUcret();
                 writer.write(satir);
                 writer.newLine();
 
@@ -106,10 +101,10 @@ public class ServisYoneticisi {
     // --- DOSYA YÜKLEME ---
     public void verileriYukle(String dosyaAdi) {
         File dosya = new File(dosyaAdi);
-        if (!dosya.exists()) {
+        if (!dosya.exists()) {  // aradığım dosya varsa "false" yoksa "true"
             System.out.println("Kayıt dosyası bulunamadı, sistem boş başlatılıyor.");
             return;
-        }
+        }   // dosya yoksa işlem yapma
 
         try (BufferedReader reader = new BufferedReader(new FileReader(dosya))) {
             String satir;
@@ -122,7 +117,7 @@ public class ServisYoneticisi {
                 if (tur.equals("MUSTERI")) {
                     // MUSTERI;ID;Ad;Tel;Adres;Mail
                     Musteri m = new Musteri(
-                            Integer.parseInt(parcalar[1]), // ID
+                            Integer.parseInt(parcalar[1]), // ID    integer'a çevriliyor.
                             parcalar[2], // Ad
                             parcalar[3], // Tel
                             parcalar[4], // Adres
