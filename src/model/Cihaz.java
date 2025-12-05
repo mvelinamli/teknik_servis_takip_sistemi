@@ -18,10 +18,10 @@ public class Cihaz {
     }
     public Cihaz(String markaModel, String seriNo, String arizaTanimi, String sahipMusteriId) {
        	this.cihazId=sayac++;
-    	this.sahipMusteriId= this.sahipMusteriId;
-    	this.seriNo= this.seriNo;
-    	this.markaModel= this.markaModel;
-    	this.arizaTanimi= this.arizaTanimi;
+    	this.sahipMusteriId= sahipMusteriId;
+    	this.seriNo= seriNo;
+    	this.markaModel= markaModel;
+    	this.arizaTanimi= arizaTanimi;
     }
 
     //SETTER PART//
