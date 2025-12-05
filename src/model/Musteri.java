@@ -31,7 +31,6 @@ public class Musteri {
     public String getTelefon() {
         return telefon;
     }
-    // ... Diğer getter/setterlar ...
 
     // toString metodu (Test ederken yazdırmak için çok faydalıdır)
     public String toString() {

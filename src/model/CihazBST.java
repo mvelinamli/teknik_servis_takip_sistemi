@@ -31,4 +31,25 @@ public class CihazBST {
         if (id < mevcut.getCihazId()) return bulRec(mevcut.sol, id);
         else return bulRec(mevcut.sag, id);
     }
+
+    // Dosyaya yazmak için ağacı dolaşan metot
+    public void dosyayaYaz(java.io.BufferedWriter writer) throws java.io.IOException {
+        yazRecursive(kok, writer);
+    }
+
+    private void yazRecursive(Cihaz node, java.io.BufferedWriter writer) throws java.io.IOException {
+        if (node != null) {
+            yazRecursive(node.sol, writer);
+
+            // CIHAZ;ID;Marka;SeriNo;Ariza;SahipID
+            String satir = "CIHAZ;" + node.getCihazId() + ";" +
+                    node.getMarkaModel() + ";" + node.getSeriNo() + ";" +
+                    node.getArizaTanimi() + ";" + node.getSahipMusteriId();
+            writer.write(satir);
+            writer.newLine();
+
+            yazRecursive(node.sag, writer);
+        }
+    }
+
 }

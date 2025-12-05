@@ -36,4 +36,26 @@ public class MusteriBST {
         else
             return bulRecursive(mevcut.sag, id);
     }
+
+    // Dosyaya yazmak için ağacı dolaşan metot
+    public void dosyayaYaz(java.io.BufferedWriter writer) throws java.io.IOException {
+        yazRecursive(kok, writer);
+    }
+
+    private void yazRecursive(Musteri node, java.io.BufferedWriter writer) throws java.io.IOException {
+        if (node != null) {
+            // 1. Önce sol alt ağacı yaz
+            yazRecursive(node.sol, writer);
+
+            // 2. Sonra düğümün kendisini yaz (MUSTERI;ID;Ad;Tel;Adres;Mail)
+            String satir = "MUSTERI;" + node.getMusteriId() + ";" +
+                    node.getAdSoyad() + ";" + node.getTelefon() + ";" +
+                    node.getAdres() + ";" + node.getMail();
+            writer.write(satir);
+            writer.newLine();
+
+            // 3. Sonra sağ alt ağacı yaz
+            yazRecursive(node.sag, writer);
+        }
+    }
 }
