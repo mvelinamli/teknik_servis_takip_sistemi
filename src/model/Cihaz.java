@@ -11,7 +11,7 @@ public class Cihaz {
     private String seriNo;
     private String arizaTanimi;
 
-    // --- MANUEL BST İÇİN GEREKLİ İŞARETÇİLER ---
+    // --- BST İÇİN GEREKLİ İŞARETÇİLER ---
     // Ağaç yapısında sol (küçük ID) ve sağ (büyük ID) dallara gitmek için
     public Cihaz sol;
     public Cihaz sag;

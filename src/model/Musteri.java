@@ -20,9 +20,17 @@ public class Musteri {
     }
 
     // Getter ve Setter'lar
-    public int getMusteriId() { return musteriId; }
-    public String getAdSoyad() { return adSoyad; }
-    public String getTelefon() { return telefon; }
+    public int getMusteriId() {
+        return musteriId;
+    }
+
+    public String getAdSoyad() {
+        return adSoyad;
+    }
+
+    public String getTelefon() {
+        return telefon;
+    }
     // ... Diğer getter/setterlar ...
 
     // toString metodu (Test ederken yazdırmak için çok faydalıdır)
