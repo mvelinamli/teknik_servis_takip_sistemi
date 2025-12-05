@@ -7,6 +7,9 @@ public class Main {
         ServisYoneticisi yonetici = new ServisYoneticisi();
         Scanner input = new Scanner(System.in);
 
+        // 1. ÖNCE verileri yükle
+        yonetici.verileriYukle("veriler.txt");
+
         // --- TEST SENARYOSU ---
 
         // 1. Kullanıcıdan veri alalım
@@ -50,5 +53,10 @@ public class Main {
         // 6. Kuyruk Testi
         System.out.println("\n--- TEKNİSYEN EKRANI ---");
         yonetici.onarimdakiIsiGetir(); // Kuyruktan çeker
+
+        // 2. İşiniz bitince kaydet
+        // (Bunu test etmek için programı bir kez çalıştırıp veri ekleyin,
+        // kapatın, tekrar açın. Veriler geliyorsa işlem tamamdır!)
+        yonetici.verileriKaydet("veriler.txt");
     }
 }

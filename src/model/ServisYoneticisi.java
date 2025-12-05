@@ -1,5 +1,7 @@
 package model;
 
+import java.io.*;
+
 // DİKKAT: java.util.TreeMap, LinkedList, Queue ARTIK YOK!
 // Sadece kendi yazdığımız sınıfları kullanıyoruz.
 
@@ -69,5 +71,96 @@ public class ServisYoneticisi {
             System.out.println("Kuyruk boş.");
         }
         return is;
+    }
+
+    // --- DOSYA KAYDETME ---
+    public void verileriKaydet(String dosyaAdi) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dosyaAdi))) {
+
+            // 1. Müşterileri Yaz (BST'nin kendi recursive metoduyla)
+            musterilerAgaci.dosyayaYaz(writer);
+
+            // 2. Cihazları Yaz (BST'nin kendi recursive metoduyla)
+            cihazlarAgaci.dosyayaYaz(writer);
+
+            // 3. Kayıtları Yaz (Manuel Liste üzerinde döngüyle)
+            ServisKaydi temp = tumKayitlar.getHead(); // Listenin başına git
+            while (temp != null) {
+                // KAYIT;ID;CihazID;Durum;Ucret
+                String satir = "KAYIT;" + temp.getKayitId() + ";" +
+                        temp.getCihazId() + ";" + temp.getDurum() + ";" +
+                        temp.getUcret();
+                writer.write(satir);
+                writer.newLine();
+
+                temp = temp.next; // Bir sonraki düğüme geç
+            }
+
+            System.out.println("Tüm veriler başarıyla kaydedildi.");
+
+        } catch (IOException e) {
+            System.out.println("Dosya yazma hatası: " + e.getMessage());
+        }
+    }
+
+    // --- DOSYA YÜKLEME ---
+    public void verileriYukle(String dosyaAdi) {
+        File dosya = new File(dosyaAdi);
+        if (!dosya.exists()) {
+            System.out.println("Kayıt dosyası bulunamadı, sistem boş başlatılıyor.");
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(dosya))) {
+            String satir;
+            while ((satir = reader.readLine()) != null) {
+                String[] parcalar = satir.split(";");
+                if (parcalar.length < 2) continue; // Boş satırsa geç
+
+                String tur = parcalar[0];
+
+                if (tur.equals("MUSTERI")) {
+                    // MUSTERI;ID;Ad;Tel;Adres;Mail
+                    Musteri m = new Musteri(
+                            Integer.parseInt(parcalar[1]), // ID
+                            parcalar[2], // Ad
+                            parcalar[3], // Tel
+                            parcalar[4], // Adres
+                            parcalar[5]  // Mail
+                    );
+                    musteriEkle(m);
+
+                } else if (tur.equals("CIHAZ")) {
+                    // CIHAZ;ID;Marka;SeriNo;Ariza;SahipID
+                    Cihaz c = new Cihaz(
+                            Integer.parseInt(parcalar[1]), // ID
+                            parcalar[2], // Marka
+                            parcalar[3], // SeriNo
+                            parcalar[4], // Ariza
+                            Integer.parseInt(parcalar[5])  // SahipID
+                    );
+                    cihazEkle(c);
+
+                } else if (tur.equals("KAYIT")) {
+                    // KAYIT;ID;CihazID;Durum;Ucret
+                    ServisKaydi k = new ServisKaydi(
+                            Integer.parseInt(parcalar[1]), // ID
+                            Integer.parseInt(parcalar[2]), // CihazID
+                            parcalar[3], // Durum
+                            Double.parseDouble(parcalar[4]) // Ucret
+                    );
+
+                    // Listeye ve Kuyruğa manuel ekleme
+                    tumKayitlar.ekle(k);
+                    if (k.getDurum().equals("Beklemede")) {
+                        onarimKuyrugu.ekle(k);
+                    }
+                }
+            }
+            System.out.println("Veriler başarıyla yüklendi.");
+
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Dosya okuma hatası: " + e.getMessage());
+        }
     }
 }
