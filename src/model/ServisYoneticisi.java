@@ -1,88 +1,72 @@
 package model;
 
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
-import java.util.TreeMap;
+// DİKKAT: java.util.TreeMap, LinkedList, Queue ARTIK YOK!
+// Sadece kendi yazdığımız sınıfları kullanıyoruz.
 
 public class ServisYoneticisi {
 
-    // 1. Müşteriler ve Cihazlar için Binary Search Tree (TreeMap)
-    // Neden? ID ile arama yapıldığında O(log n) hızında bulmak için.
-    private Map<Integer, Musteri> musterilerAgaci;
-    private Map<Integer, Cihaz> cihazlarAgaci;
+    // Manuel Veri Yapıları
+    private MusteriBST musterilerAgaci;      // TreeMap yerine
+    private CihazBST cihazlarAgaci;          // TreeMap yerine
 
-    // 2. Onarım Bekleyenler için Kuyruk (Queue - LinkedList)
-    // Neden? FIFO (İlk giren ilk çıkar) mantığı ile adil sıra için.
-    private Queue<ServisKaydi> onarimKuyrugu;
-
-    // 3. Tüm kayıtların arşivini tutmak için Liste
-    private LinkedList<ServisKaydi> tumKayitlarListesi;
+    private ServisListesi onarimKuyrugu;     // Queue yerine
+    private ServisListesi tumKayitlar;       // LinkedList yerine
 
     public ServisYoneticisi() {
-        // TreeMap arka planda 'Red-Black Tree' (BST türü) kullanır.
-        this.musterilerAgaci = new TreeMap<>();
-        this.cihazlarAgaci = new TreeMap<>();
-        this.onarimKuyrugu = new LinkedList<>();
-        this.tumKayitlarListesi = new LinkedList<>();
+        // Kendi sınıflarımızı başlatıyoruz
+        this.musterilerAgaci = new MusteriBST();
+        this.cihazlarAgaci = new CihazBST();
+        this.onarimKuyrugu = new ServisListesi();
+        this.tumKayitlar = new ServisListesi();
     }
 
-    // --- MÜŞTERİ İŞLEMLERİ (BST) ---
-
+    // --- MÜŞTERİ İŞLEMLERİ (Manuel BST) ---
     public void musteriEkle(Musteri m) {
         if (m != null) {
-            // put(key, value) metodu BST mantığıyla ağaca yerleştirir.
-            musterilerAgaci.put(m.getMusteriId(), m);
-            System.out.println("Müşteri eklendi (BST): " + m.getAdSoyad());
+            musterilerAgaci.ekle(m); // Kendi metodumuz
+            System.out.println("Müşteri BST'ye eklendi: " + m.getAdSoyad());
         }
     }
 
     public Musteri musteriBul(int id) {
-        // get(key) metodu O(log n) hızında arama yapar.
-        if (musterilerAgaci.containsKey(id)) {
-            return musterilerAgaci.get(id);
-        }
-        System.out.println("Müşteri bulunamadı ID: " + id);
-        return null;
+        return musterilerAgaci.bul(id); // Kendi metodumuz (O(log n))
     }
 
-    // --- CİHAZ İŞLEMLERİ (BST) ---
-
+    // --- CİHAZ İŞLEMLERİ (Manuel BST) ---
     public void cihazEkle(Cihaz c) {
         if (c != null) {
-            cihazlarAgaci.put(c.getCihazId(), c);
-            System.out.println("Cihaz eklendi (BST): " + c.getMarkaModel());
+            cihazlarAgaci.ekle(c);
+            System.out.println("Cihaz BST'ye eklendi: " + c.getMarkaModel());
         }
     }
 
     public Cihaz cihazBul(int id) {
-        return cihazlarAgaci.get(id); // Varsa döner, yoksa null döner
+        return cihazlarAgaci.bul(id);
     }
 
-    // --- SERVİS VE KUYRUK İŞLEMLERİ (Linked List / Queue) ---
-
+    // --- SERVİS VE KUYRUK İŞLEMLERİ (Manuel Liste) ---
     public void yeniServisKaydiOlustur(ServisKaydi kayit) {
         if (kayit == null) return;
 
-        // 1. Tüm geçmişi tuttuğumuz listeye ekle
-        tumKayitlarListesi.add(kayit);
+        // 1. Arşive ekle (Sona ekleme mantığı)
+        tumKayitlar.ekle(kayit);
 
-        // 2. Eğer durumu 'Beklemede' ise iş kuyruğuna ekle
+        // 2. Kuyruğa ekle (Sona ekleme mantığı - FIFO)
         if (kayit.getDurum().equals("Beklemede")) {
-            onarimKuyrugu.offer(kayit); // Kuyruğun sonuna ekler
-            System.out.println("Cihaz onarım kuyruğuna alındı. Sıra no: " + onarimKuyrugu.size());
+            onarimKuyrugu.ekle(kayit);
+            System.out.println("Kayıt manuel kuyruğa eklendi ID: " + kayit.getKayitId());
         }
     }
 
     public ServisKaydi onarimdakiIsiGetir() {
-        // Kuyruğun başındakini alır ve kuyruktan çıkarır (FIFO)
-        ServisKaydi is = onarimKuyrugu.poll();
+        // Kuyruğun başındakini çek (Manuel Dequeue)
+        ServisKaydi is = onarimKuyrugu.bastanCikar();
 
         if (is != null) {
-            is.setDurum("Onarımda"); // Durumu güncelle
-            System.out.println("Teknisyen işe başladı: Kayıt ID " + is.getKayitId());
+            is.setDurum("Onarımda");
+            System.out.println("İşleme alındı: " + is.getKayitId());
         } else {
-            System.out.println("Kuyrukta bekleyen iş yok.");
+            System.out.println("Kuyruk boş.");
         }
         return is;
     }
