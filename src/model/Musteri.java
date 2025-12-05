@@ -7,6 +7,8 @@ public class Musteri {
     private String telefon;
     private String adres;
     private String mail;
+    public Musteri sol;
+    public Musteri sag;
     // 'Musteri next;' SİLİNDİ. TreeMap kullanacağımız için gerek yok.
 
     public Musteri(String adSoyad, String telefon, String adres, String mail) {
@@ -24,7 +26,6 @@ public class Musteri {
     // ... Diğer getter/setterlar ...
 
     // toString metodu (Test ederken yazdırmak için çok faydalıdır)
-    @Override
     public String toString() {
         return "Musteri: " + adSoyad + " (ID: " + musteriId + ")";
     }

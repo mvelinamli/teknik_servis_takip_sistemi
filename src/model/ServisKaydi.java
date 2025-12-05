@@ -8,7 +8,7 @@ public class ServisKaydi {
     private String cikisTarihi;
     private String durum;
     private double ucret;
-
+    public ServisKaydi next;
     public int getKayitId() {
         return kayitId;
     }
