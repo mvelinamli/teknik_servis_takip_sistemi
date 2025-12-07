@@ -3,25 +3,30 @@ package model;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MusteriAramaEkrani extends JFrame {
 
     private ServisYoneticisi yonetici;
+
+    // Arama Alanı
     private JTextField txtAramaId;
 
-    // Müşteri Alanları
+    // Düzenlenebilir Müşteri Alanları
     private JTextField txtAd, txtTel, txtAdres, txtMail;
 
-    // YENİ: Cihaz ve Durum Alanları
+    // Bilgi Amaçlı Cihaz Alanları (Bunları değiştirmeyelim, sadece bilgi versin)
     private JTextField txtCihazMarka, txtSeriNo, txtAriza, txtDurum, txtUcret;
 
+    // Şu an üzerinde çalıştığımız ID'yi tutmak için
+    private int aktifMusteriId = -1;
+
     public MusteriAramaEkrani() {
+        // 1. Veri Bağlantısı
         yonetici = new ServisYoneticisi();
         yonetici.verileriYukle("veriler.txt");
 
-        setTitle("Detaylı Sorgulama Ekranı");
+        // 2. Pencere Ayarları
+        setTitle("Müşteri Yönetim Paneli (Ara - Düzenle - Sil)");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -29,15 +34,16 @@ public class MusteriAramaEkrani extends JFrame {
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         setContentPane(mainPanel);
 
-        // --- ÜST: ARAMA ---
+        // --- ÜST KISIM: ARAMA ---
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        searchPanel.add(new JLabel("Müşteri ID Giriniz: "));
+        searchPanel.add(new JLabel("İşlem Yapılacak Müşteri ID: "));
+
         txtAramaId = new JTextField(10);
         txtAramaId.setFont(new Font("Arial", Font.BOLD, 14));
         searchPanel.add(txtAramaId);
 
-        JButton btnAra = new JButton("SORGULA");
-        btnAra.setBackground(new Color(0, 123, 255));
+        JButton btnAra = new JButton("BUL & GETİR");
+        btnAra.setBackground(new Color(0, 123, 255)); // Mavi
         btnAra.setForeground(Color.WHITE);
         btnAra.setOpaque(true);
         btnAra.setBorderPainted(false);
@@ -45,109 +51,159 @@ public class MusteriAramaEkrani extends JFrame {
 
         mainPanel.add(searchPanel, BorderLayout.NORTH);
 
-        // --- ORTA: SONUÇLAR (Müşteri + Cihaz) ---
-        JPanel resultsPanel = new JPanel(new GridLayout(1, 2, 15, 0)); // Yan yana iki panel
+        // --- ORTA KISIM: BİLGİLER ---
+        JPanel centerPanel = new JPanel(new GridLayout(1, 2, 15, 0));
 
-        // SOL TARAF: MÜŞTERİ BİLGİLERİ
+        // SOL: Müşteri Bilgileri (DÜZENLENEBİLİR)
         JPanel musteriPanel = new JPanel(new GridLayout(4, 2, 5, 10));
-        musteriPanel.setBorder(BorderFactory.createTitledBorder("Müşteri Bilgileri"));
+        musteriPanel.setBorder(BorderFactory.createTitledBorder("Müşteri Bilgileri (Düzenlenebilir)"));
 
-        musteriPanel.add(new JLabel("Ad Soyad:")); txtAd = uneditableField(); musteriPanel.add(txtAd);
-        musteriPanel.add(new JLabel("Telefon:")); txtTel = uneditableField(); musteriPanel.add(txtTel);
-        musteriPanel.add(new JLabel("Adres:")); txtAdres = uneditableField(); musteriPanel.add(txtAdres);
-        musteriPanel.add(new JLabel("E-Posta:")); txtMail = uneditableField(); musteriPanel.add(txtMail);
+        musteriPanel.add(new JLabel("Ad Soyad:")); txtAd = new JTextField(); musteriPanel.add(txtAd);
+        musteriPanel.add(new JLabel("Telefon:")); txtTel = new JTextField(); musteriPanel.add(txtTel);
+        musteriPanel.add(new JLabel("Adres:")); txtAdres = new JTextField(); musteriPanel.add(txtAdres);
+        musteriPanel.add(new JLabel("E-Posta:")); txtMail = new JTextField(); musteriPanel.add(txtMail);
 
-        // SAĞ TARAF: CİHAZ VE DURUM BİLGİLERİ
+        // SAĞ: Cihaz Bilgileri (SADECE OKUNUR)
         JPanel cihazPanel = new JPanel(new GridLayout(5, 2, 5, 10));
-        cihazPanel.setBorder(BorderFactory.createTitledBorder("Cihaz ve Servis Durumu"));
+        cihazPanel.setBorder(BorderFactory.createTitledBorder("Cihaz ve Durum (Bilgi)"));
 
         cihazPanel.add(new JLabel("Cihaz:")); txtCihazMarka = uneditableField(); cihazPanel.add(txtCihazMarka);
         cihazPanel.add(new JLabel("Seri No:")); txtSeriNo = uneditableField(); cihazPanel.add(txtSeriNo);
         cihazPanel.add(new JLabel("Arıza:")); txtAriza = uneditableField(); cihazPanel.add(txtAriza);
 
-        // Durumu renkli göstermek için özel font
         cihazPanel.add(new JLabel("DURUM:"));
         txtDurum = uneditableField();
         txtDurum.setFont(new Font("Arial", Font.BOLD, 14));
-        txtDurum.setForeground(Color.BLUE);
         cihazPanel.add(txtDurum);
 
         cihazPanel.add(new JLabel("Ücret:")); txtUcret = uneditableField(); cihazPanel.add(txtUcret);
 
-        resultsPanel.add(musteriPanel);
-        resultsPanel.add(cihazPanel);
+        centerPanel.add(musteriPanel);
+        centerPanel.add(cihazPanel);
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
 
-        mainPanel.add(resultsPanel, BorderLayout.CENTER);
+        // --- ALT KISIM: İŞLEM BUTONLARI ---
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
 
-        // --- AKSİYON ---
-        btnAra.addActionListener(e -> detayliSorgula());
+        JButton btnGuncelle = new JButton("BİLGİLERİ GÜNCELLE");
+        btnGuncelle.setBackground(new Color(255, 193, 7)); // Sarı/Turuncu
+        btnGuncelle.setOpaque(true);
+        btnGuncelle.setBorderPainted(false);
+        btnGuncelle.setPreferredSize(new Dimension(180, 40));
+
+        JButton btnSil = new JButton("KAYDI SİL");
+        btnSil.setBackground(new Color(220, 53, 69)); // Kırmızı
+        btnSil.setForeground(Color.WHITE);
+        btnSil.setOpaque(true);
+        btnSil.setBorderPainted(false);
+        btnSil.setPreferredSize(new Dimension(150, 40));
+
+        buttonPanel.add(btnGuncelle);
+        buttonPanel.add(btnSil);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // --- AKSİYONLAR ---
+        btnAra.addActionListener(e -> musteriBul());
+
+        btnGuncelle.addActionListener(e -> {
+            if (aktifMusteriId != -1) musteriGuncelle();
+            else JOptionPane.showMessageDialog(this, "Önce bir müşteri bulmalısınız!");
+        });
+
+        btnSil.addActionListener(e -> {
+            if (aktifMusteriId != -1) musteriSil();
+            else JOptionPane.showMessageDialog(this, "Önce bir müşteri bulmalısınız!");
+        });
 
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    // Yardımcı metot: Okunabilir (değiştirilemez) metin kutusu üretir
+    // --- YARDIMCI METOTLAR ---
+
     private JTextField uneditableField() {
         JTextField f = new JTextField();
         f.setEditable(false);
-        f.setBackground(Color.WHITE); // Gri görünmesin diye beyaz yapıyoruz
+        f.setBackground(Color.WHITE);
         return f;
     }
 
-    private void detayliSorgula() {
+    private void musteriBul() {
         try {
-            int musteriId = Integer.parseInt(txtAramaId.getText().trim());
-
-            // 1. Müşteriyi Bul
-            Musteri m = yonetici.musteriBul(musteriId);
+            int id = Integer.parseInt(txtAramaId.getText().trim());
+            Musteri m = yonetici.musteriBul(id);
 
             if (m != null) {
-                // Müşteri bilgilerini doldur
+                aktifMusteriId = id; // Aktif ID'yi sakla
+
+                // Müşteri verilerini doldur
                 txtAd.setText(m.getAdSoyad());
                 txtTel.setText(m.getTelefon());
                 txtAdres.setText(m.getAdres());
                 txtMail.setText(m.getMail());
 
-                // 2. Müşteriye ait Cihazı Bul (Yazdığımız yeni metot)
-                Cihaz c = yonetici.cihazBulByMusteriId(musteriId);
-
+                // Cihaz ve Durum bilgilerini çek (Önceki mantıkla aynı)
+                Cihaz c = yonetici.cihazBulByMusteriId(id);
                 if (c != null) {
                     txtCihazMarka.setText(c.getMarkaModel());
                     txtSeriNo.setText(c.getSeriNo());
                     txtAriza.setText(c.getArizaTanimi());
 
-                    // 3. Cihaza ait Servis Kaydını Bul (Yazdığımız yeni metot)
                     ServisKaydi k = yonetici.servisKaydiBulByCihazId(c.getCihazId());
-
                     if (k != null) {
                         txtDurum.setText(k.getDurum());
-                        txtUcret.setText(String.valueOf(k.getUcret()) + " TL");
+                        txtUcret.setText(k.getUcret() + " TL");
 
-                        // Duruma göre renk değişimi (Görsel Zenginlik)
                         if(k.getDurum().equals("Beklemede")) txtDurum.setForeground(Color.RED);
-                        else if(k.getDurum().equals("Onarımda")) txtDurum.setForeground(Color.ORANGE);
-                        else txtDurum.setForeground(new Color(0, 150, 0)); // Yeşil
-
+                        else txtDurum.setForeground(new Color(0, 128, 0));
                     } else {
-                        txtDurum.setText("Kayıt Yok");
-                        txtUcret.setText("-");
+                        txtDurum.setText("-"); txtUcret.setText("-");
                     }
                 } else {
-                    txtCihazMarka.setText("Cihaz Bulunamadı");
-                    txtSeriNo.setText("-");
-                    txtAriza.setText("-");
-                    txtDurum.setText("-");
-                    txtUcret.setText("-");
+                    txtCihazMarka.setText("Yok"); txtSeriNo.setText("-"); txtAriza.setText("-");
                 }
-
             } else {
                 temizle();
-                JOptionPane.showMessageDialog(this, "Bu ID ile müşteri bulunamadı!", "Yok", JOptionPane.WARNING_MESSAGE);
+                aktifMusteriId = -1;
+                JOptionPane.showMessageDialog(this, "Müşteri Bulunamadı!", "Hata", JOptionPane.WARNING_MESSAGE);
             }
-
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Lütfen geçerli bir sayı giriniz!", "Hata", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Geçerli bir sayı giriniz!", "Hata", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void musteriGuncelle() {
+        // Yeni verileri kutucuklardan al
+        String yeniAd = txtAd.getText();
+        String yeniTel = txtTel.getText();
+        String yeniAdres = txtAdres.getText();
+        String yeniMail = txtMail.getText();
+
+        // Yönetici üzerinden güncelle
+        yonetici.musteriGuncelle(aktifMusteriId, yeniAd, yeniTel, yeniAdres, yeniMail);
+
+        // Dosyaya kaydet (Çok Önemli!)
+        yonetici.verileriKaydet("veriler.txt");
+
+        JOptionPane.showMessageDialog(this, "Bilgiler başarıyla güncellendi!");
+    }
+
+    private void musteriSil() {
+        int onay = JOptionPane.showConfirmDialog(this,
+                "ID: " + aktifMusteriId + " olan müşteriyi silmek istediğinize emin misiniz?",
+                "Silme Onayı", JOptionPane.YES_NO_OPTION);
+
+        if (onay == JOptionPane.YES_OPTION) {
+            // Ağaçtan sil
+            yonetici.musteriSil(aktifMusteriId);
+
+            // Dosyaya kaydet
+            yonetici.verileriKaydet("veriler.txt");
+
+            JOptionPane.showMessageDialog(this, "Müşteri silindi!");
+            temizle();
+            aktifMusteriId = -1;
         }
     }
 
