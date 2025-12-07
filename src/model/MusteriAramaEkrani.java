@@ -3,6 +3,8 @@ package model;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MusteriAramaEkrani extends JFrame {
 
@@ -18,32 +20,33 @@ public class MusteriAramaEkrani extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Ana Panel
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         setContentPane(mainPanel);
 
-        // --- ÜST KISIM (ARAMA ÇUBUĞU) ---
-        // FlowLayout: Elemanları doğal boyutunda yan yana dizer
+        // --- ÜST KISIM ---
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-        searchPanel.add(new JLabel("Müşteri ID: "));
+        searchPanel.add(new JLabel("Aranacak ID: "));
 
-        txtAramaId = new JTextField(10); // 10 karakter genişliğinde
+        txtAramaId = new JTextField(10);
         txtAramaId.setFont(new Font("Arial", Font.BOLD, 14));
         searchPanel.add(txtAramaId);
 
         JButton btnAra = new JButton("BUL & GETİR");
-        btnAra.setBackground(new Color(0, 123, 255));
+        btnAra.setBackground(new Color(0, 123, 255)); // Mavi
         btnAra.setForeground(Color.WHITE);
+        // *** macOS DÜZELTMESİ ***
+        btnAra.setOpaque(true);
+        btnAra.setBorderPainted(false);
+
         searchPanel.add(btnAra);
 
         mainPanel.add(searchPanel, BorderLayout.NORTH);
 
-        // --- ORTA KISIM (SONUÇLAR) ---
-        // Sonuçları gösteren panel
+        // --- ORTA KISIM ---
         JPanel resultPanel = new JPanel(new GridLayout(4, 2, 5, 10));
-        resultPanel.setBorder(BorderFactory.createTitledBorder("Müşteri Bilgileri"));
+        resultPanel.setBorder(BorderFactory.createTitledBorder("Sonuçlar"));
 
         resultPanel.add(new JLabel("Ad Soyad:"));
         txtAd = new JTextField(); txtAd.setEditable(false);
@@ -64,11 +67,15 @@ public class MusteriAramaEkrani extends JFrame {
         mainPanel.add(resultPanel, BorderLayout.CENTER);
 
         // --- AKSİYON ---
-        btnAra.addActionListener(e -> musteriBul());
+        btnAra.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                musteriBul();
+            }
+        });
 
-        // Pencereyi içeriğe göre boyutlandır
         pack();
-        setLocationRelativeTo(null); // Pack'ten sonra ortala
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
@@ -84,10 +91,10 @@ public class MusteriAramaEkrani extends JFrame {
                 txtMail.setText(m.getMail());
             } else {
                 temizle();
-                JOptionPane.showMessageDialog(this, "Bu ID ile kayıt bulunamadı!", "Yok", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Kayıt Bulunamadı!", "Hata", JOptionPane.WARNING_MESSAGE);
             }
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Lütfen geçerli bir sayı giriniz!", "Hata", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Geçerli bir sayı giriniz!", "Hata", JOptionPane.ERROR_MESSAGE);
         }
     }
 
