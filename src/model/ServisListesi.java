@@ -76,4 +76,28 @@ public class ServisListesi {
         }
         return null; // Bulunamadı
     }
+    // Belirli bir Cihaz ID'sine sahip TÜM kayıtları siler
+    public void cihazaGoreSil(int cihazId) {
+        // 1. Baştaki elemanlar silinecekse
+        while (head != null && head.getCihazId() == cihazId) {
+            head = head.next;
+            if (head == null) tail = null;
+        }
+
+        // 2. Aradaki elemanlar silinecekse
+        ServisKaydi current = head;
+        while (current != null && current.next != null) {
+            if (current.next.getCihazId() == cihazId) {
+                // Bağlantıyı atla (Sil)
+                current.next = current.next.next;
+
+                // Eğer son elemanı sildiysek tail'i güncelle
+                if (current.next == null) {
+                    tail = current;
+                }
+            } else {
+                current = current.next;
+            }
+        }
+    }
 }

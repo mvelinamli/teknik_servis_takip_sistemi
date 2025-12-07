@@ -188,10 +188,24 @@ public class ServisYoneticisi {
 
     // --- SİLME METOTLARI ---
 
-    public void musteriSil(int id) {
-        musterilerAgaci.sil(id);
-        System.out.println("Müşteri silindi (Varsa): " + id);
-        // Not: Gerçek senaryoda bu müşteriye ait cihazları da silmek gerekebilir.
+    public void musteriSil(int musteriId) {
+        // 1. Önce bu müşteriye ait cihazların listesini al
+        java.util.ArrayList<Integer> silinecekCihazlar = cihazlarAgaci.musteriyeAitCihazIdleriGetir(musteriId);
+
+        // 2. Bulunan her cihaz için döngüye gir
+        for (int cihazId : silinecekCihazlar) {
+            // A. Önce cihazın servis kayıtlarını (Arşivden ve Kuyruktan) sil
+            tumKayitlar.cihazaGoreSil(cihazId);
+            onarimKuyrugu.cihazaGoreSil(cihazId);
+
+            // B. Sonra cihazın kendisini ağaçtan sil
+            cihazlarAgaci.sil(cihazId);
+            System.out.println("Otomatik silinen cihaz ID: " + cihazId);
+        }
+
+        // 3. En son müşteriyi sil
+        musterilerAgaci.sil(musteriId);
+        System.out.println("Müşteri ve bağlı tüm veriler silindi ID: " + musteriId);
     }
 
     public void cihazSil(int id) {

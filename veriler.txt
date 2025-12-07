@@ -1,13 +1,9 @@
-MUSTERI;2;Mustafa Nuri NAMLI;5293535135;Kahramanmaraş/OnikiŞubat/Cihanevler;nuri@gmail.com
-MUSTERI;3;Zeynep;23412451234;Osmaniye;zeyno@gmail.com
-MUSTERI;4;Mehmet;5439590831;Kahramanmaraş;mehmet@gmail.com
-CIHAZ;1;Apple/Macbook pro M;F7AS087F0A89S;Pil sağlığı düştü;1
-CIHAZ;2;Lenovo/İdeapad gaming 3;7FA0S8F08SAG0F7AS;Bilgisayar çalışıyor ancak ekran gelmiyor.;2
-CIHAZ;3;samsung/s24 ultra;7F0AS87DFA8;Ekran kırık;3
-CIHAZ;4;Kumtel/Elektrikli Ocak;FS97A089SF70A;Ocak ısınmıyor;4
-CIHAZ;5;restdhfjydkuılukjh;3245678677654;dfsgdshdjkljdhgf;5
+MUSTERI;1;Muhammed Veli NAMLI;5308250480;Kahramanmaraş;veli@gmail.com
+MUSTERI;2;Mustafa Nuri NAMLI;765356573564;KAhramanmaraş;nuri@gmail.com
+MUSTERI;3;Ali;4325463574685;lkjkhjghfgdfgfhgj;fdghjgkhhfjghgds
+CIHAZ;1;Apple/Iphone 14 pro;S8FA7FSA9DFA;arka cam kırık;1
+CIHAZ;2;Lenovo/İdepad gaming 3;G88D09FGAS;Ekran gelmiyor.;2
+CIHAZ;3;gfhgjfhkgjlhhjkjh;43546574685676;ghfjhgjghhfgd;3
 KAYIT;1;1;Beklemede;0.0
-KAYIT;2;2;Onarımda;0.0
+KAYIT;2;2;Beklemede;0.0
 KAYIT;3;3;Beklemede;0.0
-KAYIT;4;4;Beklemede;0.0
-KAYIT;5;5;Beklemede;0.0
