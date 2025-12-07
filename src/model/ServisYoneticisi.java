@@ -205,4 +205,12 @@ public class ServisYoneticisi {
         onarimKuyrugu.sil(id); // Kuyrukta varsa oradan da siler
         System.out.println("Kayıt silindi: " + id);
     }
+
+    // --- SORGULAMA/LİSTELEME İÇİN ---
+
+    public Musteri[] musteriListesiGetir() {
+        return musterilerAgaci.tumMusterileriGetir();
+    }
+
+    // (Aynısını Cihazlar için de CihazBST'ye ekleyip buraya yazabilirsiniz)
 }
