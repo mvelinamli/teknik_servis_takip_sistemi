@@ -1,3 +1,7 @@
+
+// Sorgulama ekranı
+// Sorgulama, silme ve güncelleme işlemleri bu sayfada yapılır.
+
 package model;
 
 import javax.swing.*;

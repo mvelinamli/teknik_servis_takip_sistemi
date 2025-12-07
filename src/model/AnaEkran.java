@@ -1,3 +1,7 @@
+
+// Açılış ekranı
+// Yeni müşteri ve cihaz kaydı yapılan sayfa
+
 package model;
 
 import javax.swing.*;
