@@ -1,9 +1,12 @@
 MUSTERI;1;Muhammed Veli NAMLI;5308250480;Kahramanmaraş/Onikişubat;namlimuhammedveli@gmail.com
 MUSTERI;2;Mustafa Nuri NAMLI;5293535135;Kahramanmaraş/OnikiŞubat/Cihanevler;nuri@gmail.com
 MUSTERI;3;Zeynep;23412451234;Osmaniye;zeyno@gmail.com
+MUSTERI;4;Mehmet;5439590831;Kahramanmaraş;mehmet@gmail.com
 CIHAZ;1;Apple/Macbook pro M;F7AS087F0A89S;Pil sağlığı düştü;1
 CIHAZ;2;Lenovo/İdeapad gaming 3;7FA0S8F08SAG0F7AS;Bilgisayar çalışıyor ancak ekran gelmiyor.;2
 CIHAZ;3;samsung/s24 ultra;7F0AS87DFA8;Ekran kırık;3
+CIHAZ;4;Kumtel/Elektrikli Ocak;FS97A089SF70A;Ocak ısınmıyor;4
 KAYIT;1;1;Beklemede;0.0
 KAYIT;2;2;Beklemede;0.0
 KAYIT;3;3;Beklemede;0.0
+KAYIT;4;4;Beklemede;0.0

@@ -63,4 +63,17 @@ public class ServisListesi {
             temp = temp.next;
         }
     }
+
+    // ... En alta ekleyin ...
+
+    public ServisKaydi cihazaGoreBul(int cihazId) {
+        ServisKaydi temp = head;
+        while (temp != null) {
+            if (temp.getCihazId() == cihazId) {
+                return temp;
+            }
+            temp = temp.next;
+        }
+        return null; // Bulunamadı
+    }
 }

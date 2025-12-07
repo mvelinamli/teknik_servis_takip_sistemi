@@ -205,5 +205,21 @@ public class ServisYoneticisi {
         onarimKuyrugu.sil(id); // Kuyrukta varsa oradan da siler
         System.out.println("Kayıt silindi: " + id);
     }
+    // ... En alta ekleyin ...
 
+    public Cihaz cihazBulByMusteriId(int musteriId) {
+        return cihazlarAgaci.sahibineGoreBul(musteriId);
+    }
+
+    public ServisKaydi servisKaydiBulByCihazId(int cihazId) {
+        // Önce kuyruğa bak (Aktif işler oradadır)
+        ServisKaydi aktifIs = onarimKuyrugu.getHead();
+        while(aktifIs != null) {
+            if(aktifIs.getCihazId() == cihazId) return aktifIs;
+            aktifIs = aktifIs.next;
+        }
+
+        // Kuyrukta yoksa arşive (tumKayitlar) bak
+        return tumKayitlar.cihazaGoreBul(cihazId);
+    }
 }
