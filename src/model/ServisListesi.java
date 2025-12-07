@@ -26,7 +26,7 @@ public class ServisListesi {
 
         if (head == null) tail = null;
 
-        cikan.next = null; // Bağlantıyı kopar
+        //cikan.next = null; // Bağlantıyı kopar
         return cikan;
     }
 
