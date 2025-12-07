@@ -1,0 +1,6 @@
+MUSTERI;1;Muhammed Veli NAMLI;5308250480;Kahramanmaraş/Onikişubat;namlimuhammedveli@gmail.com
+MUSTERI;2;Mustafa Nuri NAMLI;5293535135;Kahramanmaraş/OnikiŞubat/Cihanevler;nuri@gmail.com
+CIHAZ;1;Apple/Macbook pro M;F7AS087F0A89S;Pil sağlığı düştü;1
+CIHAZ;2;Lenovo/İdeapad gaming 3;7FA0S8F08SAG0F7AS;Bilgisayar çalışıyor ancak ekran gelmiyor.;2
+KAYIT;1;1;Beklemede;0.0
+KAYIT;2;2;Beklemede;0.0
