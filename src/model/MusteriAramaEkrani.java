@@ -173,20 +173,41 @@ public class MusteriAramaEkrani extends JFrame {
         }
     }
 
+    // MusteriAramaEkrani.java içindeki musteriGuncelle() metodunun YENİ HALİ:
     private void musteriGuncelle() {
-        // Yeni verileri kutucuklardan al
+        // 1. Müşteri Güncelleme (Mevcut kod)
         String yeniAd = txtAd.getText();
         String yeniTel = txtTel.getText();
         String yeniAdres = txtAdres.getText();
         String yeniMail = txtMail.getText();
 
-        // Yönetici üzerinden güncelle
         yonetici.musteriGuncelle(aktifMusteriId, yeniAd, yeniTel, yeniAdres, yeniMail);
 
-        // Dosyaya kaydet (Çok Önemli!)
+        // 2. Cihaz ve Servis Güncelleme (YENİ EKLENEN KISIM)
+        try {
+            // Cihazı bul (Seri No ve Arıza güncellemesi için)
+            Cihaz c = yonetici.cihazBulByMusteriId(aktifMusteriId);
+            if (c != null) {
+                // Cihazın teknik bilgilerini güncelle
+                yonetici.cihazGuncelle(c.getCihazId(), c.getMarkaModel(), txtSeriNo.getText(), txtAriza.getText());
+
+                // Servis Durumu ve Ücretini güncelle
+                // Not: "3000 TL" yazıyorsa " TL" kısmını silip sayıya çevirmemiz lazım
+                String ucretText = txtUcret.getText().replace(" TL", "").trim();
+                double yeniUcret = Double.parseDouble(ucretText);
+                String yeniDurum = txtDurum.getText();
+
+                yonetici.servisKaydiGuncelle(c.getCihazId(), yeniDurum, yeniUcret);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ücret kısmına sadece sayı giriniz!");
+            return;
+        }
+
+        // 3. Dosyaya kaydet
         yonetici.verileriKaydet("veriler.txt");
 
-        JOptionPane.showMessageDialog(this, "Bilgiler başarıyla güncellendi!");
+        JOptionPane.showMessageDialog(this, "Müşteri ve Cihaz bilgileri başarıyla güncellendi!");
     }
 
     private void musteriSil() {

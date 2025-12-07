@@ -222,4 +222,13 @@ public class ServisYoneticisi {
         // Kuyrukta yoksa arşive (tumKayitlar) bak
         return tumKayitlar.cihazaGoreBul(cihazId);
     }
+    // ServisYoneticisi.java içine eklenecek
+    public void servisKaydiGuncelle(int cihazId, String yeniDurum, double yeniUcret) {
+        ServisKaydi k = servisKaydiBulByCihazId(cihazId);
+        if (k != null) {
+            k.setDurum(yeniDurum);
+            k.setUcret(yeniUcret);
+            System.out.println("Servis kaydı güncellendi. CihazID: " + cihazId);
+        }
+    }
 }
