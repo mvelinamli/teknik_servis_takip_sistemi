@@ -37,7 +37,7 @@ public class AnaEkran extends JFrame {
         // Ana panel oluşturup kenarlardan boşluk bırakalım (daha şık görünür)
         JPanel mainPanel = new JPanel();
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        mainPanel.setLayout(new GridLayout(10, 2, 10, 15)); // 10 Satır, 2 Sütun, Aralar açık
+        mainPanel.setLayout(new GridLayout(11, 2, 10, 15)); // 10 Satır, 2 Sütun, Aralar açık
         setContentPane(mainPanel);
 
         // --- ARAYÜZ ELEMANLARINI EKLEME ---
@@ -83,6 +83,24 @@ public class AnaEkran extends JFrame {
         JButton btnKaydet = new JButton("KAYDI TAMAMLA");
         btnKaydet.setFont(new Font("Arial", Font.BOLD, 14));
         add(btnKaydet);
+
+        // ... (Kaydet butonu kodları yukarıda) ...
+
+        // ARAMA BUTONU
+        add(new JLabel("")); // Sol taraf boşluk
+        JButton btnArama = new JButton("MÜŞTERİ ARA / SORGULA");
+        btnArama.setBackground(Color.GRAY);
+        btnArama.setForeground(Color.WHITE);
+        add(btnArama);
+
+        btnArama.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MusteriAramaEkrani(); // Yeni ekranı aç
+            }
+        });
+
+        setVisible(true); // Bu satır her zaman en sonda kalsın
 
         // --- AKSİYONLAR ---
 
@@ -151,6 +169,7 @@ public class AnaEkran extends JFrame {
         temizle();
     }
 
+
     private void temizle() {
         txtAdSoyad.setText("");
         txtTelefon.setText("");
@@ -160,4 +179,6 @@ public class AnaEkran extends JFrame {
         txtSeriNo.setText("");
         txtAriza.setText("");
     }
+
+
 }

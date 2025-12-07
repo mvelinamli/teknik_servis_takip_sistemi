@@ -1,7 +1,7 @@
 package model;
 
 public class MusteriBST {
-    private Musteri kok;
+    Musteri kok;
 
     public MusteriBST() {
         this.kok = null;
@@ -58,6 +58,7 @@ public class MusteriBST {
             yazRecursive(node.sag, writer);
         }
     }
+
     // --- SİLME İŞLEMİ (MANUEL) ---
     public void sil(int id) {
         kok = silRecursive(kok, id);
@@ -130,36 +131,4 @@ public class MusteriBST {
         hedef.bstSilmeIcinIdGuncelle(kaynak.getMusteriId());
     }
 
-    // --- LİSTELEME İÇİN GEREKLİ METOTLAR ---
-
-    // 1. Ağaçtaki eleman sayısını bulur
-    public int elemanSayisi() {
-        return sayacRecursive(kok);
-    }
-
-    private int sayacRecursive(Musteri node) {
-        if (node == null) return 0;
-        return 1 + sayacRecursive(node.sol) + sayacRecursive(node.sag);
-    }
-
-    // 2. Ağacı gezip verileri diziye doldurur
-    public Musteri[] tumMusterileriGetir() {
-        int boyut = elemanSayisi();
-        Musteri[] liste = new Musteri[boyut];
-        // Doldurma işlemini başlat (Dizinin indeksini takip etmek için bir sayaç nesnesi lazım ama
-        // basitçe global bir sayaçla veya recursive metoda index geçirerek yapalım)
-        diziDoldurRecursive(kok, liste, new int[]{0});
-        return liste;
-    }
-
-    private void diziDoldurRecursive(Musteri node, Musteri[] liste, int[] index) {
-        if (node != null) {
-            diziDoldurRecursive(node.sol, liste, index); // Sola git
-
-            liste[index[0]] = node; // Veriyi diziye koy
-            index[0]++;             // İndeksi artır
-
-            diziDoldurRecursive(node.sag, liste, index); // Sağa git
-        }
-    }
 }
