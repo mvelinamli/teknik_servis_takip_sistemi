@@ -87,23 +87,25 @@ public class AnaEkran extends JFrame {
         String adres = txtAdres.getText();
         String mail = txtMail.getText();
 
-        // 2. Basit bir kontrol: Ad boşsa kaydetme
+        // 2. Basit bir kontrol
         if (ad.isEmpty()) {
-            // Ekrana uyarı mesajı fırlatır (Pop-up)
             JOptionPane.showMessageDialog(this, "Lütfen en azından Ad Soyad giriniz!", "Hata", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // 3. Müşteri Nesnesi Oluştur (Manuel Yapımızla)
+        // 3. Müşteri Nesnesi Oluştur
         Musteri yeniMusteri = new Musteri(ad, tel, adres, mail);
 
-        // 4. Yöneticiye gönder (BST Ağacına ekler)
+        // 4. Yöneticiye gönder (RAM'deki BST Ağacına ekler)
         yonetici.musteriEkle(yeniMusteri);
 
-        // 5. Başarılı mesajı ver
+        // 5. [EKLENEN KISIM] Değişikliği anında dosyaya kaydet
+        yonetici.verileriKaydet("veriler.txt");
+
+        // 6. Başarılı mesajı ver
         JOptionPane.showMessageDialog(this, "Müşteri Başarıyla Eklendi!\nID: " + yeniMusteri.getMusteriId());
 
-        // 6. Kutucukları temizle ki yeni kayıt yapılabilsin
+        // 7. Kutucukları temizle
         txtAdSoyad.setText("");
         txtTelefon.setText("");
         txtAdres.setText("");
