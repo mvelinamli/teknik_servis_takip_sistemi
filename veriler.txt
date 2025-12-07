@@ -2,11 +2,15 @@ MUSTERI;1;Muhammed ;123;Adres Yok;mail@test.com
 MUSTERI;2;muhammed;123;Adres Yok;mail@test.com
 MUSTERI;3;Veli;321;Adres Yok;mail@test.com
 MUSTERI;4;ali;567;Adres Yok;mail@test.com
+MUSTERI;5;emin;789;Adres Yok;mail@test.com
+MUSTERI;6;batu;452345;adıyaman;batu@gmail.com
 CIHAZ;1;Samsung Laptop;SN12345;Ekran Kırık;1
 CIHAZ;2;Samsung Laptop;SN12345;Ekran Kırık;2
 CIHAZ;3;Samsung Laptop;SN12345;Ekran Kırık;3
 CIHAZ;4;Samsung Laptop;SN12345;Ekran Kırık;4
+CIHAZ;5;Samsung Laptop;SN12345;Ekran Kırık;5
 KAYIT;1;0;Onarımda;0.0
 KAYIT;2;0;Onarımda;0.0
 KAYIT;3;0;Onarımda;0.0
 KAYIT;4;0;Onarımda;0.0
+KAYIT;5;0;Onarımda;0.0
