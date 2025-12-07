@@ -1,3 +1,6 @@
+
+// Müşteri bilgilerini tutan kalıp (node)
+
 package model;
 
 public class Musteri {

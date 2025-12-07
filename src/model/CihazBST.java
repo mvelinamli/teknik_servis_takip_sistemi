@@ -1,3 +1,9 @@
+
+/* Binary search tree
+ *  Cihazları hafızada tutar
+ *  Hızlı bir şekilde arama yapabilmek için BST yapısında oluşturduk.
+ * */
+
 package model;
 
 public class CihazBST {

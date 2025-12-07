@@ -1,3 +1,6 @@
+
+//Cihaz bilgilerini tutan node
+
 package model;
 
 public class Cihaz {

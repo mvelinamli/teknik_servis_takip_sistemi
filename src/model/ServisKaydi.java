@@ -1,3 +1,6 @@
+
+// Cihazın durumunu ve servis ücretini tutan node (bağlı liste yapısında tutuluyor).
+
 package model;
 
 import java.time.LocalDate;

@@ -1,3 +1,8 @@
+
+// Arayüz ile veri yapıları arasındaki köprü
+// Dosya işlemleri ve veritabanına veri kaydetme burada tutulur.
+
+
 package model;
 
 import java.io.*;

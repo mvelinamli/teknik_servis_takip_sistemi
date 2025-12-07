@@ -1,3 +1,9 @@
+
+/*
+*   Kuyruk yapısında linked list (first in first out)
+*   Tüm kayıtları tutan bir liste ve tamir sırasını tutan bir kuyruk
+*/
+
 package model;
 
 public class ServisListesi {
