@@ -3,111 +3,96 @@ package model;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MusteriAramaEkrani extends JFrame {
 
     private ServisYoneticisi yonetici;
-
-    // Arayüz elemanları
     private JTextField txtAramaId;
-    private JTextField txtAdSoyad;
-    private JTextField txtTelefon;
-    private JTextField txtAdres;
-    private JTextField txtMail;
+    private JTextField txtAd, txtTel, txtAdres, txtMail;
 
     public MusteriAramaEkrani() {
-        // 1. Yöneticiyi Hazırla
         yonetici = new ServisYoneticisi();
         yonetici.verileriYukle("veriler.txt");
 
-        // 2. Pencere Ayarları
         setTitle("Müşteri Arama");
-        setSize(400, 450);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Ana programı kapatmasın
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        mainPanel.setLayout(new GridLayout(7, 2, 10, 10)); // 7 satır
+        // Ana Panel
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         setContentPane(mainPanel);
 
-        // --- ARAMA BÖLÜMÜ ---
-        add(new JLabel("ARANACAK ID:"));
-        txtAramaId = new JTextField();
-        add(txtAramaId);
+        // --- ÜST KISIM (ARAMA ÇUBUĞU) ---
+        // FlowLayout: Elemanları doğal boyutunda yan yana dizer
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        searchPanel.add(new JLabel("Müşteri ID: "));
+
+        txtAramaId = new JTextField(10); // 10 karakter genişliğinde
+        txtAramaId.setFont(new Font("Arial", Font.BOLD, 14));
+        searchPanel.add(txtAramaId);
 
         JButton btnAra = new JButton("BUL & GETİR");
-        btnAra.setBackground(new Color(70, 130, 180)); // Mavi ton
+        btnAra.setBackground(new Color(0, 123, 255));
         btnAra.setForeground(Color.WHITE);
-        add(btnAra); // Butonu ekle
-        add(new JLabel("")); // Yanına boşluk koy (düzen bozulmasın)
+        searchPanel.add(btnAra);
 
-        // --- SONUÇ BÖLÜMÜ (Sadece Okunabilir) ---
-        add(new JLabel("--- SONUÇLAR ---"));
-        add(new JLabel(""));
+        mainPanel.add(searchPanel, BorderLayout.NORTH);
 
-        add(new JLabel("Ad Soyad:"));
-        txtAdSoyad = new JTextField();
-        txtAdSoyad.setEditable(false); // Kullanıcı değiştiremesin
-        add(txtAdSoyad);
+        // --- ORTA KISIM (SONUÇLAR) ---
+        // Sonuçları gösteren panel
+        JPanel resultPanel = new JPanel(new GridLayout(4, 2, 5, 10));
+        resultPanel.setBorder(BorderFactory.createTitledBorder("Müşteri Bilgileri"));
 
-        add(new JLabel("Telefon:"));
-        txtTelefon = new JTextField();
-        txtTelefon.setEditable(false);
-        add(txtTelefon);
+        resultPanel.add(new JLabel("Ad Soyad:"));
+        txtAd = new JTextField(); txtAd.setEditable(false);
+        resultPanel.add(txtAd);
 
-        add(new JLabel("Adres:"));
-        txtAdres = new JTextField();
-        txtAdres.setEditable(false);
-        add(txtAdres);
+        resultPanel.add(new JLabel("Telefon:"));
+        txtTel = new JTextField(); txtTel.setEditable(false);
+        resultPanel.add(txtTel);
 
-        add(new JLabel("E-Posta:"));
-        txtMail = new JTextField();
-        txtMail.setEditable(false);
-        add(txtMail);
+        resultPanel.add(new JLabel("Adres:"));
+        txtAdres = new JTextField(); txtAdres.setEditable(false);
+        resultPanel.add(txtAdres);
 
-        // --- BUTON AKSİYONU ---
-        btnAra.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                musteriBul();
-            }
-        });
+        resultPanel.add(new JLabel("E-Posta:"));
+        txtMail = new JTextField(); txtMail.setEditable(false);
+        resultPanel.add(txtMail);
 
+        mainPanel.add(resultPanel, BorderLayout.CENTER);
+
+        // --- AKSİYON ---
+        btnAra.addActionListener(e -> musteriBul());
+
+        // Pencereyi içeriğe göre boyutlandır
+        pack();
+        setLocationRelativeTo(null); // Pack'ten sonra ortala
         setVisible(true);
     }
 
     private void musteriBul() {
         try {
-            // 1. ID'yi al
             int id = Integer.parseInt(txtAramaId.getText().trim());
+            Musteri m = yonetici.musteriBul(id);
 
-            // 2. Yöneticiye sor (BST'den getir)
-            Musteri bulunan = yonetici.musteriBul(id);
-
-            // 3. Sonucu göster
-            if (bulunan != null) {
-                txtAdSoyad.setText(bulunan.getAdSoyad());
-                txtTelefon.setText(bulunan.getTelefon());
-                txtAdres.setText(bulunan.getAdres());
-                txtMail.setText(bulunan.getMail());
-                JOptionPane.showMessageDialog(this, "Müşteri Bulundu!");
+            if (m != null) {
+                txtAd.setText(m.getAdSoyad());
+                txtTel.setText(m.getTelefon());
+                txtAdres.setText(m.getAdres());
+                txtMail.setText(m.getMail());
             } else {
                 temizle();
-                JOptionPane.showMessageDialog(this, "Bu ID ile kayıtlı müşteri yok!", "Bulunamadı", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Bu ID ile kayıt bulunamadı!", "Yok", JOptionPane.WARNING_MESSAGE);
             }
-
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Lütfen geçerli bir sayı giriniz!", "Hata", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void temizle() {
-        txtAdSoyad.setText("");
-        txtTelefon.setText("");
-        txtAdres.setText("");
-        txtMail.setText("");
+        txtAd.setText(""); txtTel.setText("");
+        txtAdres.setText(""); txtMail.setText("");
     }
 }

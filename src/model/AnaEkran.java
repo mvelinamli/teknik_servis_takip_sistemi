@@ -12,107 +12,68 @@ public class AnaEkran extends JFrame {
 
     private ServisYoneticisi yonetici;
 
-    // --- Müşteri Alanları ---
-    private JTextField txtAdSoyad;
-    private JTextField txtTelefon;
-    private JTextField txtAdres;
-    private JTextField txtMail;
-
-    // --- Cihaz Alanları ---
-    private JTextField txtMarka;
-    private JTextField txtSeriNo;
-    private JTextField txtAriza;
+    // Alanlar
+    private JTextField txtAdSoyad, txtTelefon, txtAdres, txtMail;
+    private JTextField txtMarka, txtSeriNo, txtAriza;
 
     public AnaEkran() {
-        // 1. YÖNETİCİYİ BAŞLAT VE ESKİ VERİLERİ YÜKLE
+        // 1. Backend Bağlantısı
         yonetici = new ServisYoneticisi();
         yonetici.verileriYukle("veriler.txt");
 
-        // 2. PENCERE AYARLARI
-        setTitle("Teknik Servis Takip Sistemi");
-        setSize(500, 650); // Alanlar arttığı için boyutu büyüttük
+        // 2. Pencere Ayarları
+        setTitle("Teknik Servis Kayıt");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Ekranın ortasında aç
+        setLocationRelativeTo(null);
 
-        // Ana panel oluşturup kenarlardan boşluk bırakalım (daha şık görünür)
+        // Ana Panel (Kenarlardan boşluklu)
         JPanel mainPanel = new JPanel();
-        mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        mainPanel.setLayout(new GridLayout(11, 2, 10, 15)); // 10 Satır, 2 Sütun, Aralar açık
+        mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        mainPanel.setLayout(new BorderLayout(10, 10)); // Parçaları Kuzey, Merkez, Güney diye ayırır
         setContentPane(mainPanel);
 
-        // --- ARAYÜZ ELEMANLARINI EKLEME ---
+        // --- ORTA KISIM (FORM ALANLARI) ---
+        // Burayı yine Grid yapıyoruz ama sündürmemesi için panel içine alıyoruz
+        JPanel formPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // 0 satır (otomatik), 2 sütun
 
-        // BÖLÜM 1: MÜŞTERİ
-        add(new JLabel("--- MÜŞTERİ BİLGİLERİ ---"));
-        add(new JLabel("")); // Boşluk
+        // Müşteri
+        formPanel.add(new JLabel("--- MÜŞTERİ BİLGİLERİ ---")); formPanel.add(new JLabel(""));
+        formPanel.add(new JLabel("Ad Soyad:")); txtAdSoyad = new JTextField(15); formPanel.add(txtAdSoyad);
+        formPanel.add(new JLabel("Telefon:")); txtTelefon = new JTextField(15); formPanel.add(txtTelefon);
+        formPanel.add(new JLabel("Adres:")); txtAdres = new JTextField(15); formPanel.add(txtAdres);
+        formPanel.add(new JLabel("E-Posta:")); txtMail = new JTextField(15); formPanel.add(txtMail);
 
-        add(new JLabel("Ad Soyad:"));
-        txtAdSoyad = new JTextField();
-        add(txtAdSoyad);
+        // Cihaz
+        formPanel.add(new JLabel("--- CİHAZ BİLGİLERİ ---")); formPanel.add(new JLabel(""));
+        formPanel.add(new JLabel("Marka/Model:")); txtMarka = new JTextField(15); formPanel.add(txtMarka);
+        formPanel.add(new JLabel("Seri No:")); txtSeriNo = new JTextField(15); formPanel.add(txtSeriNo);
+        formPanel.add(new JLabel("Arıza:")); txtAriza = new JTextField(15); formPanel.add(txtAriza);
 
-        add(new JLabel("Telefon:"));
-        txtTelefon = new JTextField();
-        add(txtTelefon);
+        mainPanel.add(formPanel, BorderLayout.CENTER);
 
-        add(new JLabel("Adres:"));
-        txtAdres = new JTextField();
-        add(txtAdres);
+        // --- ALT KISIM (BUTONLAR) ---
+        // Butonları FlowLayout ile koyarsak doğal boyutlarında kalırlar (sünmezler)
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
-        add(new JLabel("E-Posta:"));
-        txtMail = new JTextField();
-        add(txtMail);
-
-        // BÖLÜM 2: CİHAZ
-        add(new JLabel("--- CİHAZ BİLGİLERİ ---"));
-        add(new JLabel("")); // Boşluk
-
-        add(new JLabel("Cihaz Marka/Model:"));
-        txtMarka = new JTextField();
-        add(txtMarka);
-
-        add(new JLabel("Seri Numarası:"));
-        txtSeriNo = new JTextField();
-        add(txtSeriNo);
-
-        add(new JLabel("Arıza Tanımı:"));
-        txtAriza = new JTextField();
-        add(txtAriza);
-
-        // KAYDET BUTONU
-        add(new JLabel("")); // Sol tarafı boş bırak
         JButton btnKaydet = new JButton("KAYDI TAMAMLA");
-        btnKaydet.setFont(new Font("Arial", Font.BOLD, 14));
-        add(btnKaydet);
+        btnKaydet.setBackground(new Color(40, 167, 69)); // Yeşilimsi
+        btnKaydet.setForeground(Color.WHITE);
+        btnKaydet.setPreferredSize(new Dimension(150, 40)); // Sabit boyut verelim
 
-        // ... (Kaydet butonu kodları yukarıda) ...
+        JButton btnSorgula = new JButton("SORGULAMA EKRANI");
+        btnSorgula.setBackground(new Color(0, 123, 255)); // Mavi
+        btnSorgula.setForeground(Color.WHITE);
+        btnSorgula.setPreferredSize(new Dimension(160, 40));
 
-        // ARAMA BUTONU
-        add(new JLabel("")); // Sol taraf boşluk
-        JButton btnArama = new JButton("MÜŞTERİ ARA / SORGULA");
-        btnArama.setBackground(Color.GRAY);
-        btnArama.setForeground(Color.WHITE);
-        add(btnArama);
+        buttonPanel.add(btnKaydet);
+        buttonPanel.add(btnSorgula);
 
-        btnArama.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new MusteriAramaEkrani(); // Yeni ekranı aç
-            }
-        });
-
-        setVisible(true); // Bu satır her zaman en sonda kalsın
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         // --- AKSİYONLAR ---
+        btnKaydet.addActionListener(e -> tamKayitOlustur());
+        btnSorgula.addActionListener(e -> new MusteriAramaEkrani()); // Arama ekranını açar
 
-        // Butona tıklandığında
-        btnKaydet.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tamKayitOlustur();
-            }
-        });
-
-        // Pencere kapanırken (X'e basınca) verileri kaydet
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -120,65 +81,40 @@ public class AnaEkran extends JFrame {
             }
         });
 
+        // pack(): Pencereyi içindeki elemanların sığacağı en ideal boyuta otomatik getirir.
+        pack();
+        setLocationRelativeTo(null); // Pack'ten sonra ortala
         setVisible(true);
     }
 
-    // --- MANTIK KISMI: ZİNCİRLEME KAYIT ---
     private void tamKayitOlustur() {
-        // 1. Verileri Al
         String ad = txtAdSoyad.getText().trim();
         String tel = txtTelefon.getText().trim();
         String adres = txtAdres.getText().trim();
         String mail = txtMail.getText().trim();
-
         String marka = txtMarka.getText().trim();
         String seri = txtSeriNo.getText().trim();
         String ariza = txtAriza.getText().trim();
 
-        // 2. Kontrol Et
         if (ad.isEmpty() || marka.isEmpty() || ariza.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Lütfen Ad, Marka ve Arıza alanlarını doldurunuz!", "Eksik Bilgi", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ad, Marka ve Arıza alanları zorunludur!", "Eksik", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // 3. ADIM A: Müşteriyi Ekle -> ID oluşur
         Musteri m = new Musteri(ad, tel, adres, mail);
         yonetici.musteriEkle(m);
 
-        // 4. ADIM B: Cihazı Ekle (Müşterinin ID'sini kullan!)
-        // m.getMusteriId() diyerek yeni oluşan ID'yi alıp cihaza bağlıyoruz
         Cihaz c = new Cihaz(marka, seri, ariza, m.getMusteriId());
         yonetici.cihazEkle(c);
 
-        // 5. ADIM C: Servis Kaydı Aç (Cihazın ID'sini kullan!)
         ServisKaydi k = new ServisKaydi(c.getCihazId(), "Beklemede");
         yonetici.yeniServisKaydiOlustur(k);
 
-        // 6. ADIM D: Her Şeyi Kaydet (Garanti Olsun)
         yonetici.verileriKaydet("veriler.txt");
 
-        // 7. Kullanıcıya Bilgi Ver
-        String mesaj = "Kayıt Başarıyla Oluşturuldu!\n\n" +
-                "Müşteri ID: " + m.getMusteriId() + "\n" +
-                "Cihaz ID: " + c.getCihazId() + "\n" +
-                "Takip No: " + k.getKayitId();
+        JOptionPane.showMessageDialog(this, "Kayıt Başarılı!\nTakip No: " + k.getKayitId());
 
-        JOptionPane.showMessageDialog(this, mesaj, "İşlem Başarılı", JOptionPane.INFORMATION_MESSAGE);
-
-        // 8. Alanları Temizle
-        temizle();
+        txtAdSoyad.setText(""); txtTelefon.setText(""); txtAdres.setText(""); txtMail.setText("");
+        txtMarka.setText(""); txtSeriNo.setText(""); txtAriza.setText("");
     }
-
-
-    private void temizle() {
-        txtAdSoyad.setText("");
-        txtTelefon.setText("");
-        txtAdres.setText("");
-        txtMail.setText("");
-        txtMarka.setText("");
-        txtSeriNo.setText("");
-        txtAriza.setText("");
-    }
-
-
 }
