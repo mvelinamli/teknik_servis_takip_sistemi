@@ -193,10 +193,24 @@ public class ServisYoneticisi {
 
     // --- SİLME METOTLARI ---
 
-    public void musteriSil(int id) {
-        musterilerAgaci.sil(id);
-        System.out.println("Müşteri silindi (Varsa): " + id);
-        // Not: Gerçek senaryoda bu müşteriye ait cihazları da silmek gerekebilir.
+    public void musteriSil(int musteriId) {
+        // 1. Önce bu müşteriye ait cihazların listesini al
+        java.util.ArrayList<Integer> silinecekCihazlar = cihazlarAgaci.musteriyeAitCihazIdleriGetir(musteriId);
+
+        // 2. Bulunan her cihaz için döngüye gir
+        for (int cihazId : silinecekCihazlar) {
+            // A. Önce cihazın servis kayıtlarını (Arşivden ve Kuyruktan) sil
+            tumKayitlar.cihazaGoreSil(cihazId);
+            onarimKuyrugu.cihazaGoreSil(cihazId);
+
+            // B. Sonra cihazın kendisini ağaçtan sil
+            cihazlarAgaci.sil(cihazId);
+            System.out.println("Otomatik silinen cihaz ID: " + cihazId);
+        }
+
+        // 3. En son müşteriyi sil
+        musterilerAgaci.sil(musteriId);
+        System.out.println("Müşteri ve bağlı tüm veriler silindi ID: " + musteriId);
     }
 
     public void cihazSil(int id) {
@@ -209,5 +223,33 @@ public class ServisYoneticisi {
         tumKayitlar.sil(id);
         onarimKuyrugu.sil(id); // Kuyrukta varsa oradan da siler
         System.out.println("Kayıt silindi: " + id);
+    }
+    // ... En alta ekleyin ...
+
+    public Cihaz cihazBulByMusteriId(int musteriId) {
+        return cihazlarAgaci.sahibineGoreBul(musteriId);
+    }
+
+    public ServisKaydi servisKaydiBulByCihazId(int cihazId) {
+        // Önce kuyruğa bak (Aktif işler oradadır)
+        ServisKaydi aktifIs = onarimKuyrugu.getHead();
+        while(aktifIs != null) {
+            if(aktifIs.getCihazId() == cihazId) return aktifIs;
+            aktifIs = aktifIs.next;
+        }
+
+        // Kuyrukta yoksa arşive (tumKayitlar) bak
+        return tumKayitlar.cihazaGoreBul(cihazId);
+    }
+    // ServisYoneticisi.java dosyasının en altındaki süslü parantezden } önce ekleyin:
+    public void servisKaydiGuncelle(int cihazId, String yeniDurum, double yeniUcret) {
+        ServisKaydi k = servisKaydiBulByCihazId(cihazId);
+        if (k != null) {
+            k.setDurum(yeniDurum);
+            k.setUcret(yeniUcret);
+            System.out.println("Servis kaydı güncellendi -> CihazID: " + cihazId);
+        } else {
+            System.out.println("HATA: Güncellenecek servis kaydı bulunamadı! CihazID: " + cihazId);
+        }
     }
 }

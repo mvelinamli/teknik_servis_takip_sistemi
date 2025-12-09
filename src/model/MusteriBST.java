@@ -7,7 +7,7 @@
 package model;
 
 public class MusteriBST {
-    private Musteri kok;
+    Musteri kok;
 
     public MusteriBST() {
         this.kok = null;
@@ -64,6 +64,7 @@ public class MusteriBST {
             yazRecursive(node.sag, writer);
         }
     }
+
     // --- SİLME İŞLEMİ (MANUEL) ---
     public void sil(int id) {
         kok = silRecursive(kok, id);
@@ -135,4 +136,5 @@ public class MusteriBST {
         // Bunun için Musteri.java'ya özel bir 'changeIdForBstDelete' metodu ekleyeceğiz.
         hedef.bstSilmeIcinIdGuncelle(kaynak.getMusteriId());
     }
+
 }

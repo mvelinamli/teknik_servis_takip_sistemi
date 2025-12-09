@@ -1,12 +1,9 @@
-MUSTERI;1;Muhammed ;123;Adres Yok;mail@test.com
-MUSTERI;2;muhammed;123;Adres Yok;mail@test.com
-MUSTERI;3;Veli;321;Adres Yok;mail@test.com
-MUSTERI;4;ali;567;Adres Yok;mail@test.com
-CIHAZ;1;Samsung Laptop;SN12345;Ekran Kırık;1
-CIHAZ;2;Samsung Laptop;SN12345;Ekran Kırık;2
-CIHAZ;3;Samsung Laptop;SN12345;Ekran Kırık;3
-CIHAZ;4;Samsung Laptop;SN12345;Ekran Kırık;4
-KAYIT;1;0;Onarımda;0.0
-KAYIT;2;0;Onarımda;0.0
-KAYIT;3;0;Onarımda;0.0
-KAYIT;4;0;Onarımda;0.0
+MUSTERI;1;Muhammed Veli NAMLI;5308250480;Kahramanmaraş;veli@gmail.com
+MUSTERI;2;Mustafa Nuri NAMLI;765356573564;KAhramanmaraş;nuri@gmail.com
+MUSTERI;3;Ali;4325463574685;lkjkhjghfgdfgfhgj;fdghjgkhhfjghgds
+CIHAZ;1;Apple/Iphone 14 pro;S8FA7FSA9DFA;arka cam kırık;1
+CIHAZ;2;Lenovo/İdepad gaming 3;G88D09FGAS;Ekran gelmiyor.;2
+CIHAZ;3;gfhgjfhkgjlhhjkjh;43546574685676;ghfjhgjghhfgd;3
+KAYIT;1;1;Beklemede;0.0
+KAYIT;2;2;Beklemede;0.0
+KAYIT;3;3;Beklemede;0.0

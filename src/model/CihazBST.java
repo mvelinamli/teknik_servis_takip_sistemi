@@ -91,4 +91,46 @@ public class CihazBST {
         hedef.bstSilmeIcinIdGuncelle(kaynak.getCihazId());
     }
 
+    // ... En alta ekleyin ...
+
+    // Müşteri ID'sine göre cihazı bulan özel metot
+    public Cihaz sahibineGoreBul(int musteriId) {
+        return sahibineGoreBulRec(kok, musteriId);
+    }
+
+    private Cihaz sahibineGoreBulRec(Cihaz node, int musteriId) {
+        if (node == null) return null;
+
+        // Eşleşme var mı?
+        if (node.getSahipMusteriId() == musteriId) {
+            return node;
+        }
+
+        // Yoksa Sola bak
+        Cihaz solSonuc = sahibineGoreBulRec(node.sol, musteriId);
+        if (solSonuc != null) return solSonuc;
+
+        // Yoksa Sağa bak
+        return sahibineGoreBulRec(node.sag, musteriId);
+    }
+    // Müşteriye ait TÜM cihazların ID'lerini liste olarak döndürür
+    public java.util.ArrayList<Integer> musteriyeAitCihazIdleriGetir(int musteriId) {
+        java.util.ArrayList<Integer> liste = new java.util.ArrayList<>();
+        collectCihazIdsRecursive(kok, musteriId, liste);
+        return liste;
+    }
+
+    private void collectCihazIdsRecursive(Cihaz node, int musteriId, java.util.ArrayList<Integer> liste) {
+        if (node == null) return;
+
+        // Eğer cihazın sahibi aradığımız kişiyse listeye ekle
+        if (node.getSahipMusteriId() == musteriId) {
+            liste.add(node.getCihazId());
+        }
+
+        // Ağacı gezmeye devam et
+        collectCihazIdsRecursive(node.sol, musteriId, liste);
+        collectCihazIdsRecursive(node.sag, musteriId, liste);
+    }
+
 }

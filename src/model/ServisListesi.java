@@ -32,7 +32,7 @@ public class ServisListesi {
 
         if (head == null) tail = null;
 
-        cikan.next = null; // Bağlantıyı kopar
+        //cikan.next = null; // Bağlantıyı kopar
         return cikan;
     }
 
@@ -67,6 +67,43 @@ public class ServisListesi {
                 return; // Silindi, çık
             }
             temp = temp.next;
+        }
+    }
+
+    // ... En alta ekleyin ...
+
+    public ServisKaydi cihazaGoreBul(int cihazId) {
+        ServisKaydi temp = head;
+        while (temp != null) {
+            if (temp.getCihazId() == cihazId) {
+                return temp;
+            }
+            temp = temp.next;
+        }
+        return null; // Bulunamadı
+    }
+    // Belirli bir Cihaz ID'sine sahip TÜM kayıtları siler
+    public void cihazaGoreSil(int cihazId) {
+        // 1. Baştaki elemanlar silinecekse
+        while (head != null && head.getCihazId() == cihazId) {
+            head = head.next;
+            if (head == null) tail = null;
+        }
+
+        // 2. Aradaki elemanlar silinecekse
+        ServisKaydi current = head;
+        while (current != null && current.next != null) {
+            if (current.next.getCihazId() == cihazId) {
+                // Bağlantıyı atla (Sil)
+                current.next = current.next.next;
+
+                // Eğer son elemanı sildiysek tail'i güncelle
+                if (current.next == null) {
+                    tail = current;
+                }
+            } else {
+                current = current.next;
+            }
         }
     }
 }
