@@ -1,30 +1,21 @@
-
-//Cihaz bilgilerini tutan node
-
 package model;
 
 public class Cihaz {
-    // Statik sayaç: Yeni cihaz eklendikçe ID'yi otomatik artırmak için
-    private static int sayac = 0;
-
-    // Cihaz Özellikleri
+    // Veri Alanları
     private int cihazId;
-    private int sahipMusteriId; // Cihazın kime ait olduğunu tutar (Foreign Key)
     private String markaModel;
     private String seriNo;
     private String arizaTanimi;
+    private int sahipMusteriId;
 
-    // --- BST İÇİN GEREKLİ İŞARETÇİLER ---
-    // Ağaç yapısında sol (küçük ID) ve sağ (büyük ID) dallara gitmek için
+    // Binary Search Tree (BST) için bağlantı noktaları
+    // CihazBST sınıfının erişebilmesi için public veya package-private olmalı
     public Cihaz sol;
     public Cihaz sag;
 
-    /**
-     * Constructor 1: Sisteme YENİ bir cihaz eklerken kullanılır.
-     * ID otomatik olarak atanır.
-     */
-    public Cihaz(String markaModel, String seriNo, String arizaTanimi, int sahipMusteriId) {
-        this.cihazId = ++sayac;
+    // Constructor (Yapıcı Metot)
+    public Cihaz(int cihazId, String markaModel, String seriNo, String arizaTanimi, int sahipMusteriId) {
+        this.cihazId = cihazId;
         this.markaModel = markaModel;
         this.seriNo = seriNo;
         this.arizaTanimi = arizaTanimi;
@@ -35,67 +26,52 @@ public class Cihaz {
         this.sag = null;
     }
 
-    /**
-     * Constructor 2: Dosyadan veri OKURKEN kullanılır.
-     * ID korunur ve sayaç güncellenir.
-     */
-    public Cihaz(int id, String markaModel, String seriNo, String arizaTanimi, int sahipMusteriId) {
-        this.cihazId = id;
-        this.markaModel = markaModel;
-        this.seriNo = seriNo;
-        this.arizaTanimi = arizaTanimi;
-        this.sahipMusteriId = sahipMusteriId;
+    // --- GETTER VE SETTER METOTLARI ---
 
-        // Eğer dosyadan gelen ID, bizim sayacımızdan büyükse sayacı güncelle
-        // Böylece yeni kayıt eklerken ID çakışması olmaz.
-        if (id > sayac) {
-            sayac = id;
-        }
-
-        this.sol = null;
-        this.sag = null;
-    }
-
-    // --- GETTER METOTLARI ---
     public int getCihazId() {
         return cihazId;
     }
 
-    public int getSahipMusteriId() {
-        return sahipMusteriId;
+    // BST silme işleminde düğüm yer değiştirirken ID güncellemesi gerekebilir
+    public void bstSilmeIcinIdGuncelle(int yeniId) {
+        this.cihazId = yeniId;
     }
 
     public String getMarkaModel() {
         return markaModel;
     }
 
-    public String getSeriNo() {
-        return seriNo;
-    }
-
-    public String getArizaTanimi() {
-        return arizaTanimi;
-    }
-
-    // --- SETTER METOTLARI (Gerekirse güncelleme yapmak için) ---
     public void setMarkaModel(String markaModel) {
         this.markaModel = markaModel;
+    }
+
+    public String getSeriNo() {
+        return seriNo;
     }
 
     public void setSeriNo(String seriNo) {
         this.seriNo = seriNo;
     }
 
+    public String getArizaTanimi() {
+        return arizaTanimi;
+    }
+
     public void setArizaTanimi(String arizaTanimi) {
         this.arizaTanimi = arizaTanimi;
     }
 
-
-    // --- TOSTRING (Test ederken yazdırmak için) ---
-    @Override
-    public String toString() {
-        return "Cihaz [ID=" + cihazId + ", Marka=" + markaModel + ", SeriNo=" + seriNo + "]";
+    public int getSahipMusteriId() {
+        return sahipMusteriId;
     }
 
-    public void bstSilmeIcinIdGuncelle(int id) { this.cihazId = id; }
+    public void setSahipMusteriId(int sahipMusteriId) {
+        this.sahipMusteriId = sahipMusteriId;
+    }
+
+    // JavaFX TableView'da görünmesini istediğin özel bir format varsa buraya ekleyebilirsin
+    @Override
+    public String toString() {
+        return markaModel + " (" + seriNo + ")";
+    }
 }

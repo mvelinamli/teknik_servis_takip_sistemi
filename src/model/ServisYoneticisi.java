@@ -1,23 +1,22 @@
-
-// Arayüz ile veri yapıları arasındaki köprü
-// Dosya işlemleri ve veritabanına veri kaydetme burada tutulur.
-
-
 package model;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServisYoneticisi {
 
     // Veri Yapıları
-    private MusteriBST musterilerAgaci;     //Musterileri id'ye göre hızlı bir şekilde bulabilmek için bir binary search tree oluşturduk.
-    private CihazBST cihazlarAgaci;     // Cihazları hızlı bulabilmek için binary search tree
-
-    private ServisListesi onarimKuyrugu;    //Tamir bekleyen cihazları sırayla (FIFO - İlk Giren İlk Çıkar) tutmak için Bağlı Liste (kuyruk yapısı kullanılarak).
+    private MusteriBST musterilerAgaci;
+    private CihazBST cihazlarAgaci;
+    private ServisListesi onarimKuyrugu;
     private ServisListesi tumKayitlar;
 
     public ServisYoneticisi() {
-        // Tanımladığımız 4 veri yapısını boş olarak başlatır
         this.musterilerAgaci = new MusteriBST();
         this.cihazlarAgaci = new CihazBST();
         this.onarimKuyrugu = new ServisListesi();
@@ -27,20 +26,31 @@ public class ServisYoneticisi {
     // --- MÜŞTERİ İŞLEMLERİ ---
     public void musteriEkle(Musteri m) {
         if (m != null) {
-            musterilerAgaci.ekle(m); // MusteriBST içerisindeki ekle() metodunu çağrır.
-            System.out.println("Müşteri BST'ye eklendi: " + m.getAdSoyad());
+            musterilerAgaci.ekle(m);
         }
     }
 
     public Musteri musteriBul(int id) {
-        return musterilerAgaci.bul(id); // MusteriBST içerisindeki bul() metodunu çağırır.
+        return musterilerAgaci.bul(id);
+    }
+
+    public List<Musteri> musterileriGetir() {
+        List<Musteri> liste = new ArrayList<>();
+        inorderMusteri(musterilerAgaci.getRoot(), liste);
+        return liste;
+    }
+
+    private void inorderMusteri(MusteriBST.Node node, List<Musteri> out) {
+        if (node == null) return;
+        inorderMusteri(node.left, out);
+        out.add(node.data);
+        inorderMusteri(node.right, out);
     }
 
     // --- CİHAZ İŞLEMLERİ ---
     public void cihazEkle(Cihaz c) {
         if (c != null) {
             cihazlarAgaci.ekle(c);
-            System.out.println("Cihaz BST'ye eklendi: " + c.getMarkaModel());
         }
     }
 
@@ -48,166 +58,109 @@ public class ServisYoneticisi {
         return cihazlarAgaci.bul(id);
     }
 
-    // --- SERVİS VE KUYRUK İŞLEMLERİ  ---
+    // BST yapısını TableView için düz listeye çevirir
+    public List<Cihaz> cihazlariGetir() {
+        List<Cihaz> liste = new ArrayList<>();
+        inorderCihaz(cihazlarAgaci.getRoot(), liste);
+        return liste;
+    }
+
+    private void inorderCihaz(Cihaz node, List<Cihaz> out) {
+        if (node == null) return;
+        inorderCihaz(node.sol, out);
+        out.add(node);
+        inorderCihaz(node.sag, out);
+    }
+
+    // --- SERVİS KAYDI İŞLEMLERİ ---
     public void yeniServisKaydiOlustur(ServisKaydi kayit) {
         if (kayit == null) return;
-
-        // 1. Arşive ekle -> kayıtların asla kaybolmaması için arşive ekler.
-        tumKayitlar.ekle(kayit);    // ServisListesi içerisinden ekle() metodunu çağırıyor.
-
-        // 2. Kuyruğa ekle (Sona ekleme mantığı - FIFO)
-        if (kayit.getDurum().equals("Beklemede")) {     //equals() iki string ifadenin içeriklerinin aynı olup olmadığını kontrol ederken kullanılır. equals yerine "==" kullanılan senaryoda string içerikler aynı olsa bile hafızadaki adresler farklı olduğunda "false" dönderir.
+        tumKayitlar.ekle(kayit);
+        if ("Beklemede".equals(kayit.getDurum())) {
             onarimKuyrugu.ekle(kayit);
-            System.out.println("Kayıt manuel kuyruğa eklendi ID: " + kayit.getKayitId());   //Sadece durumu "Beklemede" ise iş kuyruğuna ekler. Böylece teknisyen sadece bekleyen işleri görür
         }
     }
 
-    public ServisKaydi onarimdakiIsiGetir() {   // listenin başındaki elemanı alır ve listeden sier (first in first out)
-        // Kuyruğun başındakini çek
-        ServisKaydi is = onarimKuyrugu.bastanCikar();
+    // Bağlı liste yapısını TableView için düz listeye çevirir
+    public List<ServisKaydi> servisKayitlariniGetir() {
+        List<ServisKaydi> liste = new ArrayList<>();
+        ServisKaydi temp = tumKayitlar.getHead();
+        while (temp != null) {
+            liste.add(temp);
+            temp = temp.next;
+        }
+        return liste;
+    }
 
+    public ServisKaydi onarimdakiIsiGetir() {
+        ServisKaydi is = onarimKuyrugu.bastanCikar();
         if (is != null) {
-            is.setDurum("Onarımda");    // Kuyruktan alınan işin durumunu otomatik olarak "Onarımda" yapar.
-            System.out.println("İşleme alındı: " + is.getKayitId());
-        } else {
-            System.out.println("Kuyruk boş.");
+            is.setDurum("Onarımda");
         }
         return is;
     }
 
-    // --- DOSYA KAYDETME ---
+    // --- DOSYA İŞLEMLERİ (Persistence) ---
     public void verileriKaydet(String dosyaAdi) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dosyaAdi /*, true*/))) {    //BufferedWriter: Verileri tek tek diske yazmak yavaştır. Bu sınıf verileri hafızada biriktirip topluca yazar
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(dosyaAdi))) {
+            musterilerAgaci.dosyayaYaz(w);
+            cihazlarAgaci.dosyayaYaz(w);
 
-            // 1. Müşterileri Yaz (BST'nin kendi recursive metoduyla)
-            musterilerAgaci.dosyayaYaz(writer);     //MusteriBST içerisinden dosyayaYaz() metodunu çağırır.
-
-            // 2. Cihazları Yaz (BST'nin kendi recursive metoduyla)
-            cihazlarAgaci.dosyayaYaz(writer);
-
-            // 3. Kayıtları Yaz (Manuel Liste üzerinde döngüyle)
-            ServisKaydi temp = tumKayitlar.getHead(); // Listenin başına gitmek için ServisListesi içerisinde getHead() metodunu çağırır.
+            ServisKaydi temp = tumKayitlar.getHead();
             while (temp != null) {
-                // KAYIT;ID;CihazID;Durum;Ucret -> format
-                String satir = "KAYIT;" + temp.getKayitId() + ";" + temp.getCihazId() + ";" + temp.getDurum() + ";" + temp.getUcret();
-                writer.write(satir);
-                writer.newLine();
-
-                temp = temp.next; // Bir sonraki düğüme geç
+                String s = "KAYIT;" + temp.getKayitId() + ";" + temp.getCihazId() + ";" +
+                           temp.getDurum() + ";" + temp.getUcret();
+                w.write(s);
+                w.newLine();
+                temp = temp.next;
             }
-
-            System.out.println("Tüm veriler başarıyla kaydedildi.");
-
-        } catch (IOException e) {
-            System.out.println("Dosya yazma hatası: " + e.getMessage());
+            System.out.println("Veriler '" + dosyaAdi + "' dosyasına kaydedildi.");
+        } catch (Exception e) {
+            System.err.println("Kayıt hatası: " + e.getMessage());
         }
     }
 
-    // --- DOSYA YÜKLEME ---
     public void verileriYukle(String dosyaAdi) {
-        File dosya = new File(dosyaAdi);
-        if (!dosya.exists()) {  // aradığım dosya varsa "false" yoksa "true"
-            System.out.println("Kayıt dosyası bulunamadı, sistem boş başlatılıyor.");
-            return;
-        }   // dosya yoksa işlem yapma
+        File f = new File(dosyaAdi);
+        if (!f.exists()) return;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(dosya))) {
+        try (BufferedReader r = new BufferedReader(new FileReader(f))) {
             String satir;
-            while ((satir = reader.readLine()) != null) {
-                String[] parcalar = satir.split(";");
-                if (parcalar.length < 2) continue; // Boş satırsa geç
+            while ((satir = r.readLine()) != null) {
+                String[] p = satir.split(";");
+                if (p.length < 2) continue;
 
-                String tur = parcalar[0];
-
-                if (tur.equals("MUSTERI")) {
-                    // MUSTERI;ID;Ad;Tel;Adres;Mail
-                    Musteri m = new Musteri(
-                            Integer.parseInt(parcalar[1]), // ID    integer'a çevriliyor.
-                            parcalar[2], // Ad
-                            parcalar[3], // Tel
-                            parcalar[4], // Adres
-                            parcalar[5]  // Mail
-                    );
-                    musteriEkle(m);
-
-                } else if (tur.equals("CIHAZ")) {
-                    // CIHAZ;ID;Marka;SeriNo;Ariza;SahipID
-                    Cihaz c = new Cihaz(
-                            Integer.parseInt(parcalar[1]), // ID
-                            parcalar[2], // Marka
-                            parcalar[3], // SeriNo
-                            parcalar[4], // Ariza
-                            Integer.parseInt(parcalar[5])  // SahipID
-                    );
-                    cihazEkle(c);
-
-                } else if (tur.equals("KAYIT")) {
-                    // KAYIT;ID;CihazID;Durum;Ucret
-                    ServisKaydi k = new ServisKaydi(
-                            Integer.parseInt(parcalar[1]), // ID
-                            Integer.parseInt(parcalar[2]), // CihazID
-                            parcalar[3], // Durum
-                            Double.parseDouble(parcalar[4]) // Ucret
-                    );
-
-                    // Listeye ve Kuyruğa manuel ekleme
-                    tumKayitlar.ekle(k);
-                    if (k.getDurum().equals("Beklemede")) {
-                        onarimKuyrugu.ekle(k);
-                    }
+                switch (p[0]) {
+                    case "MUSTERI":
+                        musteriEkle(new Musteri(Integer.parseInt(p[1]), p[2], p[3], p[4], p[5]));
+                        break;
+                    case "CIHAZ":
+                        cihazEkle(new Cihaz(Integer.parseInt(p[1]), p[2], p[3], p[4], Integer.parseInt(p[5])));
+                        break;
+                    case "KAYIT":
+                        ServisKaydi k = new ServisKaydi(Integer.parseInt(p[1]), Integer.parseInt(p[2]), p[3], Double.parseDouble(p[4]));
+                        tumKayitlar.ekle(k);
+                        if ("Beklemede".equals(k.getDurum())) onarimKuyrugu.ekle(k);
+                        break;
                 }
             }
             System.out.println("Veriler başarıyla yüklendi.");
-
-        } catch (IOException | NumberFormatException e) {
-            System.out.println("Dosya okuma hatası: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Yükleme hatası: " + e.getMessage());
         }
     }
 
-    // --- GÜNCELLEME METOTLARI ---
-
-    // Müşteri Güncelleme
-    public void musteriGuncelle(int id, String yeniAd, String yeniTel, String yeniAdres, String yeniMail) {
-        Musteri m = musteriBul(id);
-        if (m != null) {
-            m.setAdSoyad(yeniAd);
-            m.setTelefon(yeniTel);
-            m.setAdres(yeniAdres);
-            m.setMail(yeniMail);
-            System.out.println("Müşteri güncellendi: " + id);
-        } else {
-            System.out.println("Müşteri bulunamadı!");
-        }
-    }
-
-    // Cihaz Güncelleme
-    public void cihazGuncelle(int id, String yeniMarka, String yeniSeri, String yeniAriza) {
-        Cihaz c = cihazBul(id);
-        if (c != null) {
-            c.setMarkaModel(yeniMarka);
-            c.setSeriNo(yeniSeri);
-            c.setArizaTanimi(yeniAriza);
-            System.out.println("Cihaz güncellendi: " + id);
-        }
-    }
-
-    // --- SİLME METOTLARI ---
-
+    // --- GÜNCELLEME VE SİLME ---
     public void musteriSil(int id) {
         musterilerAgaci.sil(id);
-        System.out.println("Müşteri silindi (Varsa): " + id);
-        // Not: Gerçek senaryoda bu müşteriye ait cihazları da silmek gerekebilir.
     }
 
     public void cihazSil(int id) {
         cihazlarAgaci.sil(id);
-        System.out.println("Cihaz silindi (Varsa): " + id);
     }
 
     public void servisKaydiSil(int id) {
-        // Hem arşivden hem kuyruktan silmeyi dene
         tumKayitlar.sil(id);
-        onarimKuyrugu.sil(id); // Kuyrukta varsa oradan da siler
-        System.out.println("Kayıt silindi: " + id);
+        onarimKuyrugu.sil(id);
     }
 }
