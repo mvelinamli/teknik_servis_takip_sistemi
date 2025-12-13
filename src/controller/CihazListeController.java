@@ -2,9 +2,11 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent; // ActionEvent importunu ekle
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert; // Alert için ekle
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Cihaz;
 import model.ServisYoneticisi;
@@ -24,43 +26,56 @@ public class CihazListeController {
     // Bu metod AnaEkranController tarafından sayfa yüklendiğinde çağrılır
     public void setServisYoneticisi(ServisYoneticisi sy) {
         this.servisYoneticisi = sy;
-        listeyiYenile();
+        // KRİTİK DÜZELTME: Listeyi Yenileme tetikleyicisini buradan kaldırdık.
+        // Artık sadece AnaEkranController.sayfaYukle() metodu çağıracak.
     }
 
     @FXML
     public void initialize() {
-        // PropertyValueFactory içindeki isimler Cihaz.java'daki değişkenlerle BİREBİR aynı olmalı
-        // JavaFX arkada otomatik olarak getCihazId(), getMarkaModel() metodlarını arar.
+        // Cihaz.java'daki değişken/getter isimleriyle eşleştirme
         colID.setCellValueFactory(new PropertyValueFactory<>("cihazId"));
         colMarka.setCellValueFactory(new PropertyValueFactory<>("markaModel"));
         colSeriNo.setCellValueFactory(new PropertyValueFactory<>("seriNo"));
         colAriza.setCellValueFactory(new PropertyValueFactory<>("arizaTanimi"));
-        
-        // ÖNEMLİ: Cihaz.java'da değişken ismi 'sahipMusteriId' olduğu için burayı düzelttik
-        colSahipID.setCellValueFactory(new PropertyValueFactory<>("sahipMusteriId"));
+        colSahipID.setCellValueFactory(new PropertyValueFactory<>("sahipMusteriId")); // Düzeltilmiş
     }
 
-    // Verileri BST'den çekip tabloya basan yardımcı metod
+    // --- LİSTEYİ YENİLEME METODU (AnaEkranController tarafından çağrılır) ---
     public void listeyiYenile() {
-        if (servisYoneticisi != null) {
+        if (servisYoneticisi != null && tblCihazlar != null) {
             List<Cihaz> cihazListesi = servisYoneticisi.cihazlariGetir();
-            // ObservableList kullanarak tabloyu güncelliyoruz
             ObservableList<Cihaz> data = FXCollections.observableArrayList(cihazListesi);
             tblCihazlar.setItems(data);
-            tblCihazlar.refresh(); // Görünümü zorla yenile
-            System.out.println("Cihaz listesi yenilendi. Kayıt sayısı: " + cihazListesi.size());
+            tblCihazlar.refresh();
+            System.out.println("Cihaz listesi yenilendi. Toplam kayıt: " + cihazListesi.size());
+        } else {
+             System.err.println("Servis Yöneticisi veya Tablo Henüz Hazır Değil.");
         }
     }
 
     @FXML
-    void cihazSil() {
+    void cihazSil(ActionEvent event) { // ActionEvent eklenmeli
         Cihaz secilen = tblCihazlar.getSelectionModel().getSelectedItem();
         if (secilen != null) {
-            // Önce modelden (BST'den) sil
+            // Modelden (BST'den) sil
             servisYoneticisi.cihazSil(secilen.getCihazId());
-            // Sonra tablodan görsel olarak kaldır
+
+            // Tablodan görsel olarak kaldır
             tblCihazlar.getItems().remove(secilen);
-            System.out.println("Cihaz başarıyla silindi: " + secilen.getCihazId());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Başarılı");
+            alert.setHeaderText(null);
+            alert.setContentText(secilen.getMarkaModel() + " cihazı başarıyla silindi.");
+            alert.showAndWait();
+
+            // listeyiYenile(); // İstenirse silindikten sonra listeyi tamamen yenileyebiliriz
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Uyarı");
+            alert.setHeaderText(null);
+            alert.setContentText("Lütfen silmek için bir cihaz seçin.");
+            alert.showAndWait();
         }
     }
 }
