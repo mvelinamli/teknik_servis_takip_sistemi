@@ -19,70 +19,72 @@ public class AnaEkranController {
         this.servisYoneticisi = sy;
     }
 
+    // --- Menü Metotları ---
     @FXML
-    void musteriEkleTikla(ActionEvent event) {
-        sayfaYukle("musteri_ekle.fxml");
-    }
+    void musteriEkleTikla(ActionEvent event) { sayfaYukle("musteri_ekle.fxml"); }
 
     @FXML
-    void cihazEkleTikla(ActionEvent event) {
-        sayfaYukle("CihazEkle.fxml");
-    }
+    void cihazEkleTikla(ActionEvent event) { sayfaYukle("CihazEkle.fxml"); }
 
     @FXML
-    void servisOlusturTikla(ActionEvent event) {
-        sayfaYukle("ServisOlustur.fxml");
-    }
+    void servisOlusturTikla(ActionEvent event) { sayfaYukle("ServisOlustur.fxml"); }
 
     @FXML
-    void musteriListeTikla(ActionEvent event) {
-        sayfaYukle("MusteriListe.fxml");
-    }
+    void musteriListeTikla(ActionEvent event) { sayfaYukle("MusteriListe.fxml"); }
 
     @FXML
-    void cihazListeTikla(ActionEvent event) {
-        sayfaYukle("CihazListe.fxml");
-    }
+    void cihazListeTikla(ActionEvent event) { sayfaYukle("CihazListe.fxml"); }
 
     @FXML
-    void servisListeTikla(ActionEvent event) {
-        sayfaYukle("ServisListe.fxml");
-    }
+    void servisListeTikla(ActionEvent event) { sayfaYukle("ServisListe.fxml"); }
+    // ----------------------
 
     private void sayfaYukle(String fxmlDosyaAdi) {
         try {
             System.out.println("Yükleniyor: " + fxmlDosyaAdi);
             URL fxmlUrl = getClass().getResource("/view/" + fxmlDosyaAdi);
-            
+
             if (fxmlUrl == null) {
                 System.err.println("Hata: " + fxmlDosyaAdi + " bulunamadı!");
                 return;
             }
 
-            // Statik yükleme yerine FXMLLoader nesnesi oluşturuyoruz
             FXMLLoader loader = new FXMLLoader(fxmlUrl);
             Node node = loader.load();
 
-            // --- VERİ AKTARIMI BURADA YAPILIYOR ---
-            // Yüklenen her sayfanın Controller'ına ulaşıyoruz
-            Object subController = loader.getController();
+            // YÜKLENEN CONTROLLER'A ERİŞİM VE KRİTİK İŞLEMLER
+            Object controller = loader.getController();
 
-            // Eğer yüklenen sayfanın bir servisYoneticisi ihtiyacı varsa, ona elimizdeki nesneyi veriyoruz
-            // Bu sayede Müşteri Ekle'de eklediğin kişi, Müşteri Liste'de anında görünür.
-            if (subController instanceof ServisOlusturController) {
-                ((ServisOlusturController) subController).setServisYoneticisi(this.servisYoneticisi);
-            } else if (subController instanceof MusteriListeController) {
-                ((MusteriListeController) subController).setServisYoneticisi(this.servisYoneticisi);
-            } else if (subController instanceof MusteriEkleController) {
-                ((MusteriEkleController) subController).setServisYoneticisi(this.servisYoneticisi);
-            } else if (subController instanceof CihazEkleController) {
-                ((CihazEkleController) subController).setServisYoneticisi(this.servisYoneticisi);
+            // Genel veri atama işlemi
+            if (controller instanceof MusteriEkleController) {
+                ((MusteriEkleController) controller).setServisYoneticisi(this.servisYoneticisi);
+            } else if (controller instanceof CihazEkleController) {
+                ((CihazEkleController) controller).setServisYoneticisi(this.servisYoneticisi);
+            } else if (controller instanceof ServisOlusturController) {
+                ((ServisOlusturController) controller).setServisYoneticisi(this.servisYoneticisi);
             }
-            // --------------------------------------
+
+            // --- KRİTİK LİSTE YENİLEME TETİKLEYİCİSİ BURAYA EKLENİYOR ---
+
+            // 1. Müşteri Listesini Güncelleme
+            if (controller instanceof MusteriListeController) {
+                MusteriListeController listController = (MusteriListeController) controller;
+                listController.setServisYoneticisi(this.servisYoneticisi);
+                listController.listeyiYenile(); // KRİTİK ÇAĞRI
+            }
+
+            // 2. Cihaz Listesini Güncelleme
+            else if (controller instanceof CihazListeController) {
+                CihazListeController listController = (CihazListeController) controller;
+                listController.setServisYoneticisi(this.servisYoneticisi);
+                listController.listeyiYenile(); // KRİTİK ÇAĞRI
+            }
+
+            // ---------------------------------------------------------------
 
             // ContainerPane içeriğini değiştir
             containerPane.getChildren().setAll(node);
-            
+
             // Ekranın pane'i tam kaplamasını sağla
             AnchorPane.setTopAnchor(node, 0.0);
             AnchorPane.setBottomAnchor(node, 0.0);

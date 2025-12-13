@@ -9,10 +9,9 @@
                 <TableView fx:id="tblMusteriler" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="colID" text="ID" prefWidth="50"/>
-                        <TableColumn fx:id="colAd" text="Ad" prefWidth="100"/>
-                        <TableColumn fx:id="colSoyad" text="Soyad" prefWidth="100"/>
+                        <TableColumn fx:id="colAdSoyad" text="Ad Soyad" prefWidth="200"/>
+                        <TableColumn fx:id="colEmail" text="E-Posta" prefWidth="150"/>
                         <TableColumn fx:id="colTelefon" text="Telefon" prefWidth="120"/>
-                        <TableColumn fx:id="colEmail" text="E-Posta" prefWidth="120"/>
                         <TableColumn fx:id="colAdres" text="Adres" prefWidth="150"/>
                     </columns>
                 </TableView>
