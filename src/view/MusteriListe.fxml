@@ -6,6 +6,7 @@
     <children>
         <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
             <children>
+                <Label text="Müşteri Listesi" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
                 <TableView fx:id="tblMusteriler" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="colID" text="ID" prefWidth="50"/>
@@ -15,11 +16,10 @@
                         <TableColumn fx:id="colAdres" text="Adres" prefWidth="150"/>
                     </columns>
                 </TableView>
-                <HBox spacing="10">
+                <HBox spacing="10" alignment="CENTER_RIGHT">
                     <children>
-                        <Button fx:id="btnYeniMusteri" text="Yeni Müşteri" onAction="#yeniMusteriEkle"/>
-                        <Button fx:id="btnGuncelle" text="Güncelle" onAction="#musteriGuncelle"/>
-                        <Button fx:id="btnSil" text="Sil" onAction="#musteriSil" style="-fx-text-fill: red;"/>
+                        <Button fx:id="btnGuncelle" text="Güncelle" onAction="#musteriGuncelle" style="-fx-background-color: #FFA500; -fx-text-fill: white;"/>
+                        <Button fx:id="btnSil" text="Sil" onAction="#musteriSil" style="-fx-background-color: #F44336; -fx-text-fill: white;"/>
                     </children>
                 </HBox>
             </children>
