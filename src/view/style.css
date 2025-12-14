@@ -1,31 +1,41 @@
-/* GENEL TANIMLAR */
+/*
+ * ==========================================================
+ * GENEL STİLLER VE RESETLER
+ * ==========================================================
+ */
 .root {
     -fx-base: #f7f9fa; /* Çok Açık Gri Arka Plan */
     -fx-background-color: -fx-base;
     -fx-font-family: "Segoe UI", "Arial", sans-serif;
 }
 
-/* YAN MENÜ (SIDEBAR) */
+/*
+ * ==========================================================
+ * YAN MENÜ (SIDEBAR) STİLLERİ
+ * ==========================================================
+ */
 .sidebar {
     -fx-background-color: #34495e; /* Koyu Gri Mavi */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 4, 0); /* Daha belirgin gölge */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 4, 0);
 }
 
+/* Başlık ve Logo */
 .logo-text {
-    -fx-text-fill: #ecf0f1; /* Açık Beyaz */
+    -fx-text-fill: #ecf0f1;
     -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-padding: 0 0 15px 0;
 }
 
+/* Menü Kategori Başlıkları */
 .menu-header {
-    -fx-text-fill: #bdc3c7; /* Soluk Gri */
+    -fx-text-fill: #bdc3c7;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-padding: 15px 0 5px 0;
 }
 
-/* MENÜ BUTONLARI */
+/* --- MENÜ BUTONLARI (Genel Tanımlar) --- */
 .menu-button, .menu-button-active, .menu-button-action {
     -fx-background-color: transparent;
     -fx-text-fill: #ecf0f1;
@@ -37,36 +47,44 @@
 
 /* Normal Buton Hover */
 .menu-button:hover {
-    -fx-background-color: #4a637d; /* Daha koyu bir hover */
+    -fx-background-color: #4a637d;
 }
 
-/* AKTİF BUTON (Seçili sayfayı belirtmek için) */
+/* AKTİF BUTON (Seçili Sayfa) */
 .menu-button-active {
-    -fx-background-color: #2980b9; /* Canlı Mavi */
+    -fx-background-color: #2980b9;
     -fx-font-weight: bold;
 }
 .menu-button-active:hover {
     -fx-background-color: #2980b9;
 }
 
-/* VURGU BUTONU (Yeni Kayıt gibi aksiyonlar için) */
+/* VURGU BUTONU (Aksiyon) */
 .menu-button-action {
-    -fx-background-color: #e67e22; /* Turuncu Vurgu */
+    -fx-background-color: #e67e22;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-padding: 12 15 12 15; /* Biraz daha kalın */
+    -fx-padding: 12 15 12 15;
 }
 .menu-button-action:hover {
     -fx-background-color: #d35400;
 }
 
 
-/* İÇERİK ALANI */
+/*
+ * ==========================================================
+ * İÇERİK ALANI VE KONTEYNER STİLLERİ
+ * ==========================================================
+ */
 .page-title {
     -fx-font-size: 28px;
     -fx-text-fill: #2c3e50;
     -fx-font-weight: 700;
     -fx-padding: 0 0 15px 0;
+    /* YENİ LİSTE İYİLEŞTİRMESİ */
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #e0e0e0;
+    -fx-margin: 0 0 20px 0;
 }
 
 .content-container {
@@ -76,16 +94,71 @@
     -fx-padding: 20;
 }
 
-/* TABLOLAR (Ekstra şık dokunuş) */
+
+/*
+ * ==========================================================
+ * TABLO STİLLERİ (TableView) - (YENİ GÖRÜNÜM)
+ * ==========================================================
+ */
 .table-view {
-    -fx-background-color: transparent;
-    -fx-border-color: #bdc3c7;
-    -fx-border-radius: 5px;
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 8, 0, 1, 1);
+    -fx-font-size: 13px;
 }
-.table-column {
+
+/* Sütun Başlıkları */
+.table-view .column-header-background {
+    -fx-background-color: #f0f0f0;
+    -fx-padding: 8px 0;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #cccccc;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #34495e;
+    -fx-font-weight: bold;
     -fx-alignment: CENTER-LEFT;
 }
-/* DASHBOARD KART STİLLERİ */
+
+/* Tablo Satırları */
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-cell-size: 35px;
+}
+
+/* Alternatif Satırlar */
+.table-row-cell:odd {
+    -fx-background-color: #fafafa;
+}
+
+/* Satır Üzerine Gelme (Hover) Efekti */
+.table-row-cell:hover {
+    -fx-background-color: #e0f2f7;
+    -fx-cursor: hand;
+}
+
+/* Seçili Satır Stili */
+.table-row-cell:selected {
+    -fx-background-color: #3498db;
+}
+.table-row-cell:selected .label {
+    -fx-text-fill: white;
+}
+
+.table-cell {
+    -fx-border-color: transparent;
+    -fx-padding: 5 10 5 10;
+}
+
+
+/*
+ * ==========================================================
+ * DASHBOARD KARTLARI
+ * ==========================================================
+ */
 .dashboard-card, .dashboard-card-danger {
     -fx-background-color: white;
     -fx-padding: 15px;
@@ -98,10 +171,11 @@
 }
 
 .dashboard-card-danger {
-    -fx-background-color: #e74c3c; /* Kırmızı arka plan */
+    -fx-background-color: #e74c3c;
     -fx-border-color: #c0392b;
 }
 
+/* Kart İçindeki Başlık (Title) */
 .card-title {
     -fx-font-size: 12px;
     -fx-text-fill: #7f8c8d;
@@ -112,6 +186,7 @@
     -fx-text-fill: white;
 }
 
+/* Kart İçindeki Değer (Value) */
 .card-value {
     -fx-font-size: 28px;
     -fx-font-weight: bold;
@@ -124,7 +199,7 @@
     -fx-text-fill: white;
 }
 
-/* HIZLI ERİŞİM BUTONLARI */
+/* --- HIZLI ERİŞİM BUTONLARI (Dashboard) --- */
 .quick-action-button, .quick-action-button-action {
     -fx-font-size: 14px;
     -fx-padding: 10 20;
@@ -142,9 +217,43 @@
 }
 
 .quick-action-button-action {
-    -fx-background-color: #2ecc71; /* Yeşil vurgu */
+    -fx-background-color: #2ecc71;
     -fx-text-fill: white;
 }
 .quick-action-button-action:hover {
     -fx-background-color: #27ae60;
+}
+
+/*
+ * ==========================================================
+ * LİSTE SAYFASI AKSİYON BUTONLARI (Güncelle/Sil) - (YENİ GÖRÜNÜM)
+ * ==========================================================
+ */
+
+/* Güncelle Butonu (Turuncu) */
+.list-action-button-guncelle {
+    -fx-background-color: #f39c12;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+}
+.list-action-button-guncelle:hover {
+    -fx-background-color: #d35400;
+}
+
+/* Sil Butonu (Kırmızı) */
+.list-action-button-sil {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+}
+.list-action-button-sil:hover {
+    -fx-background-color: #c0392b;
 }

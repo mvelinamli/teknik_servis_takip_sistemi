@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import model.ServisKaydi;
@@ -100,6 +101,7 @@ public class ServisListeController {
         }
     }
 
+
     // --- FATURA OLUŞTUR METODU ---
     @FXML
     void faturaOlustur(ActionEvent event) {
@@ -141,5 +143,41 @@ public class ServisListeController {
         alert.setHeaderText(null);
         alert.setContentText(mesaj);
         alert.showAndWait();
+    }
+
+    // Overload to allow providing a title and a message
+    private void alertGoster2(Alert.AlertType tip, String baslik, String mesaj) {
+        Alert alert = new Alert(tip);
+        alert.setTitle(baslik);
+        alert.setHeaderText(null);
+        alert.setContentText(mesaj);
+        alert.showAndWait();
+    }
+    @FXML
+    void servisKaydiSil(ActionEvent event) {
+        ServisKaydi secilen = tblServisKayitlari.getSelectionModel().getSelectedItem();
+
+        if (secilen == null) {
+            alertGoster2(AlertType.WARNING, "Uyarı", "Lütfen silmek için bir servis kaydı seçin.");
+            return;
+        }
+
+        Alert onay = new Alert(AlertType.CONFIRMATION);
+        onay.setTitle("Onay Gerekiyor");
+        onay.setHeaderText("Servis Kaydı Silme Onayı");
+        onay.setContentText("Kayıt No " + secilen.getKayitId() + " olan servis kaydını silmek istediğinizden emin misiniz?");
+
+        Optional<ButtonType> sonuc = onay.showAndWait();
+
+        if (sonuc.isPresent() && sonuc.get() == ButtonType.OK) {
+            // Servis Yöneticisi aracılığıyla kaydı sil
+            servisYoneticisi.servisKaydiSil(secilen.getKayitId());
+
+            // KRİTİK: Değişiklikleri kalıcı hale getir
+            servisYoneticisi.verileriKaydet("servis_verileri.txt");
+
+            listeyiYenile();
+            alertGoster2(AlertType.INFORMATION, "Başarılı", "Servis kaydı başarıyla silindi ve kaydedildi.");
+        }
     }
 }
