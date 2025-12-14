@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MusteriListeController">
+    <children>
+        <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
+            <children>
+                <TableView fx:id="tblMusteriler" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colID" text="ID" prefWidth="50"/>
+                        <TableColumn fx:id="colAdSoyad" text="Ad Soyad" prefWidth="200"/>
+                        <TableColumn fx:id="colEmail" text="E-Posta" prefWidth="150"/>
+                        <TableColumn fx:id="colTelefon" text="Telefon" prefWidth="120"/>
+                        <TableColumn fx:id="colAdres" text="Adres" prefWidth="150"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10">
+                    <children>
+                        <Button fx:id="btnYeniMusteri" text="Yeni Müşteri" onAction="#yeniMusteriEkle"/>
+                        <Button fx:id="btnGuncelle" text="Güncelle" onAction="#musteriGuncelle"/>
+                        <Button fx:id="btnSil" text="Sil" onAction="#musteriSil" style="-fx-text-fill: red;"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
