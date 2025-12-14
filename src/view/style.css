@@ -1,62 +1,150 @@
-/* Arka Plan ve Genel Font */
+/* GENEL TANIMLAR */
 .root {
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    background-color: #f4f7f6;
-    -fx-background-color: #f4f7f6;
+    -fx-base: #f7f9fa; /* Çok Açık Gri Arka Plan */
+    -fx-background-color: -fx-base;
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
 }
 
-/* Yan Menü (Sidebar) */
+/* YAN MENÜ (SIDEBAR) */
 .sidebar {
-    -fx-background-color: #2c3e50;
-    -fx-padding: 20;
+    -fx-background-color: #34495e; /* Koyu Gri Mavi */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 4, 0); /* Daha belirgin gölge */
 }
 
-/* Modern Butonlar */
-.menu-button {
+.logo-text {
+    -fx-text-fill: #ecf0f1; /* Açık Beyaz */
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 15px 0;
+}
+
+.menu-header {
+    -fx-text-fill: #bdc3c7; /* Soluk Gri */
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 15px 0 5px 0;
+}
+
+/* MENÜ BUTONLARI */
+.menu-button, .menu-button-active, .menu-button-action {
     -fx-background-color: transparent;
     -fx-text-fill: #ecf0f1;
     -fx-font-size: 14px;
-    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15 10 15;
+    -fx-background-radius: 6px;
     -fx-cursor: hand;
-    -fx-padding: 10 15;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
 }
 
+/* Normal Buton Hover */
 .menu-button:hover {
-    -fx-background-color: #34495e;
+    -fx-background-color: #4a637d; /* Daha koyu bir hover */
 }
 
-.menu-button:pressed {
-    -fx-background-color: #1abc9c;
+/* AKTİF BUTON (Seçili sayfayı belirtmek için) */
+.menu-button-active {
+    -fx-background-color: #2980b9; /* Canlı Mavi */
+    -fx-font-weight: bold;
+}
+.menu-button-active:hover {
+    -fx-background-color: #2980b9;
 }
 
-/* Kaydet Butonu (Yeşil) */
-.btn-success {
-    -fx-background-color: #27ae60;
+/* VURGU BUTONU (Yeni Kayıt gibi aksiyonlar için) */
+.menu-button-action {
+    -fx-background-color: #e67e22; /* Turuncu Vurgu */
     -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 12 15 12 15; /* Biraz daha kalın */
+}
+.menu-button-action:hover {
+    -fx-background-color: #d35400;
+}
+
+
+/* İÇERİK ALANI */
+.page-title {
+    -fx-font-size: 28px;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: 700;
+    -fx-padding: 0 0 15px 0;
+}
+
+.content-container {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-padding: 20;
+}
+
+/* TABLOLAR (Ekstra şık dokunuş) */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5px;
+}
+.table-column {
+    -fx-alignment: CENTER-LEFT;
+}
+/* DASHBOARD KART STİLLERİ */
+.dashboard-card, .dashboard-card-danger {
+    -fx-background-color: white;
+    -fx-padding: 15px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 1, 1);
+    -fx-spacing: 5;
+    -fx-border-color: #ecf0f1;
+    -fx-border-width: 1px;
+}
+
+.dashboard-card-danger {
+    -fx-background-color: #e74c3c; /* Kırmızı arka plan */
+    -fx-border-color: #c0392b;
+}
+
+.card-title {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.card-title-white {
+    -fx-font-size: 12px;
+    -fx-text-fill: white;
+}
+
+.card-value {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.card-value-white {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* HIZLI ERİŞİM BUTONLARI */
+.quick-action-button, .quick-action-button-action {
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
     -fx-font-weight: bold;
 }
 
-/* Form Alanları */
-.text-field, .text-area {
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-    -fx-border-color: #bdc3c7;
-    -fx-padding: 8;
-}
-
-.text-field:focused {
-    -fx-border-color: #3498db;
-    -fx-border-width: 2;
-}
-
-/* Tablolar */
-.table-view {
-    -fx-background-color: white;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-}
-.table-view .column-header {
+.quick-action-button {
     -fx-background-color: #ecf0f1;
+    -fx-text-fill: #34495e;
+}
+.quick-action-button:hover {
+    -fx-background-color: #bdc3c7;
+}
+
+.quick-action-button-action {
+    -fx-background-color: #2ecc71; /* Yeşil vurgu */
+    -fx-text-fill: white;
+}
+.quick-action-button-action:hover {
+    -fx-background-color: #27ae60;
 }

@@ -16,31 +16,32 @@ public class ServisKaydi {
     private String durum;
     private double ucret;
 
-    // Manuel Liste/Kuyruk için işaretçi
-    public ServisKaydi next;
+    // Bağlı Liste/Kuyruk için sadece sonraki düğümü işaret eden pointer
+    public ServisKaydi next; // Node görevi görmesi için bırakıldı
 
-    // --- Constructor 1: Yeni Kayıt Oluştururken ---
+    // --- Constructor 1: Yeni Kayıt Oluştururken (Min. Parametre) ---
     public ServisKaydi(int cihazId, String durum) {
         this.kayitId = ++sayac; // Otomatik ID ver
         this.cihazId = cihazId;
         this.durum = durum;
         this.girisTarihi = LocalDate.now().toString(); // Şu anki tarihi atar
-        this.next = null;
+        this.next = null; // Bağlantıyı sıfırla
     }
 
-    // --- Constructor 2: Dosyadan Okurken ---
+    // --- Constructor 2: Dosyadan Okurken (Tüm Parametreler) ---
     public ServisKaydi(int id, int cihazId, String durum, double ucret) {
         this.kayitId = id;
         this.cihazId = cihazId;
         this.durum = durum;
         this.ucret = ucret;
+        this.girisTarihi = LocalDate.now().toString(); // Dosyadan okunurken tarihi yeniden atar
         this.next = null;
 
         // Sayaç güncellemesi (ID çakışmasını önler)
         if (id > sayac) sayac = id;
     }
 
-    // --- Constructor 3: Boş (Main içinde manuel set etmek isterseniz) ---
+    // --- Constructor 3: Boş (ID'yi otomatik atar) ---
     public ServisKaydi() {
         this.kayitId = ++sayac;
         this.girisTarihi = LocalDate.now().toString();
@@ -55,7 +56,8 @@ public class ServisKaydi {
     public double getUcret() { return ucret; }
     public void setUcret(double ucret) { this.ucret = ucret; }
     public String getGirisTarihi() { return girisTarihi; }
-    public void setGirisTarihi(String girisTarihi) { this.girisTarihi = girisTarihi; }
+    // Setter'lar sadece zorunlu olduğu zaman bırakıldı (DTO/Model prensibi)
+    // public void setGirisTarihi(String girisTarihi) { this.girisTarihi = girisTarihi; }
     public String getCikisTarihi() { return cikisTarihi; }
     public void setCikisTarihi(String cikisTarihi) { this.cikisTarihi = cikisTarihi; }
 

@@ -8,6 +8,6 @@ KAYIT;1;0;Onarımda;0.0
 KAYIT;2;0;Onarımda;0.0
 KAYIT;3;0;Onarımda;0.0
 KAYIT;4;0;Onarımda;0.0
-KAYIT;5;29088;Tamamlandı;0.0
+KAYIT;5;29088;Beklemede;0.0
 KAYIT;996;25134;Beklemede;0.0
 KAYIT;997;62756;Beklemede;0.0

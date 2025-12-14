@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
 
-<HBox prefHeight="700" prefWidth="1000" stylesheets="@style.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AnaEkranController">
-    <children>
-        <VBox prefWidth="220" styleClass="sidebar" spacing="15">
-            <children>
-                <Label text="TEKNİK SERVİS" style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 0 0 20 0;"/>
+<BorderPane prefHeight="700" prefWidth="1200" stylesheets="@style.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AnaEkranController">
 
-                <Button text="Müşteri &amp; Cihaz Ekle" onAction="#musteriEkleTikla" styleClass="menu-button" maxWidth="Infinity"/>
-                <Button text="Müşteri Listesi" onAction="#musteriListeTikla" styleClass="menu-button" maxWidth="Infinity"/>
+    <left>
+        <VBox prefWidth="240" styleClass="sidebar" spacing="10">
+            <padding>
+                <Insets top="30" right="20" bottom="20" left="20"/>
+            </padding>
 
-                <Separator style="-fx-opacity: 0.3;"/>
+            <Label text="TEKNİK SERVİS" styleClass="logo-text"/>
 
-                <Button text="Cihaz Listesi" onAction="#cihazListeTikla" styleClass="menu-button" maxWidth="Infinity"/>
+            <Separator style="-fx-opacity: 0.3; -fx-padding: 0 0 10 0;"/>
 
-                <Separator style="-fx-opacity: 0.3;"/>
-                <Button text="Servis Arşivi" onAction="#servisListeTikla" styleClass="menu-button" maxWidth="Infinity"/>
-            </children>
+            <Button text="⚡ Dashboard" onAction="#anaEkranTikla" styleClass="menu-button-active" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+
+            <Label text="MÜŞTERİ YÖNETİMİ" styleClass="menu-header"/>
+            <Button text="➕ Yeni Müşteri/Cihaz" onAction="#musteriEkleTikla" styleClass="menu-button" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            <Button text="📋 Müşteri Listesi" onAction="#musteriListeTikla" styleClass="menu-button" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+
+            <Label text="SERVİS İŞLEMLERİ" styleClass="menu-header"/>
+            <Button text="🔧 Yeni Servis Kaydı Aç" onAction="#servisOlusturTikla" styleClass="menu-button-action" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            <Button text="💻 Cihaz Listesi" onAction="#cihazListeTikla" styleClass="menu-button" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            <Button text="📦 Servis Takip Arşivi" onAction="#servisListeTikla" styleClass="menu-button" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+
         </VBox>
+    </left>
 
-        <VBox HBox.hgrow="ALWAYS" style="-fx-padding: 30;">
-            <children>
-                <Label text="Yönetim Paneli" style="-fx-font-size: 24px; -fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
-                <AnchorPane fx:id="containerPane" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0); -fx-padding: 20;"/>
-            </children>
+    <center>
+        <VBox style="-fx-padding: 20;" alignment="TOP_LEFT">
+            <Label text="Yönetim Paneli" styleClass="page-title"/>
+            <AnchorPane fx:id="containerPane" VBox.vgrow="ALWAYS" styleClass="content-container"/>
         </VBox>
-    </children>
-</HBox>
+    </center>
+</BorderPane>

@@ -23,7 +23,55 @@ public class ServisYoneticisi {
         this.tumKayitlar = new ServisListesi();
     }
 
+    // ==========================================================
+    // --- DASHBOARD METRİK METOTLARI ---
+    // ==========================================================
+
+    // Müşteri sayısını BST'den hesaplar
+    public int getMusteriSayisi() {
+        return musteriSayisiniHesapla(musterilerAgaci.getRoot());
+    }
+
+    private int musteriSayisiniHesapla(MusteriBST.Node node) {
+        if (node == null) {
+            return 0;
+        }
+        return 1 + musteriSayisiniHesapla(node.left) + musteriSayisiniHesapla(node.right);
+    }
+
+    // Cihaz sayısını BST'den hesaplar
+    public int getCihazSayisi() {
+        return cihazSayisiniHesapla(cihazlarAgaci.getRoot());
+    }
+
+    private int cihazSayisiniHesapla(CihazBST.Node node) {
+        if (node == null) {
+            return 0;
+        }
+        return 1 + cihazSayisiniHesapla(node.sol) + cihazSayisiniHesapla(node.sag);
+    }
+
+    // Servis Kuyruğu (Beklemede) boyutunu bağlı listeden hesaplar
+    public int getServisKuyruguBoyutu() {
+        return onarimKuyrugu.getBoyut();
+    }
+
+    // Tamamlanmış (Arşivlenmiş) kayıt sayısını hesaplar
+    public int getTamamlananServisSayisi() {
+        int sayac = 0;
+        ServisKaydi temp = tumKayitlar.getHead();
+        while (temp != null) {
+            if ("Tamamlandı".equals(temp.getDurum())) {
+                sayac++;
+            }
+            temp = temp.next;
+        }
+        return sayac;
+    }
+
+    // ==========================================================
     // --- MÜŞTERİ İŞLEMLERİ ---
+    // ==========================================================
     public void musteriEkle(Musteri m) {
         if (m != null) {
             musterilerAgaci.ekle(m);
@@ -47,7 +95,6 @@ public class ServisYoneticisi {
         inorderMusteri(node.right, out);
     }
 
-    // --- EKSİK OLAN MÜŞTERİ GÜNCELLEME METODU ---
     public void musteriGuncelle(int id, String yeniAd, String yeniTel, String yeniAdres, String yeniMail) {
         Musteri m = musteriBul(id);
         if (m != null) {
@@ -59,32 +106,34 @@ public class ServisYoneticisi {
         }
     }
 
+    // ==========================================================
     // --- CİHAZ İŞLEMLERİ ---
+    // ==========================================================
     public void cihazEkle(Cihaz c) {
         if (c != null) {
             cihazlarAgaci.ekle(c);
         }
     }
 
+    // EKSİK METOT GERİ EKLENDİ (Cihaz Ekleme ve Servis Oluşturma için)
     public Cihaz cihazBul(int id) {
         return cihazlarAgaci.bul(id);
     }
 
-    // BST yapısını TableView için düz listeye çevirir
     public List<Cihaz> cihazlariGetir() {
         List<Cihaz> liste = new ArrayList<>();
         inorderCihaz(cihazlarAgaci.getRoot(), liste);
         return liste;
     }
 
-    private void inorderCihaz(Cihaz node, List<Cihaz> out) {
+    private void inorderCihaz(CihazBST.Node node, List<Cihaz> out) {
         if (node == null) return;
         inorderCihaz(node.sol, out);
-        out.add(node);
+        out.add(node.data);
         inorderCihaz(node.sag, out);
     }
 
-    // --- EKSİK OLAN CİHAZ GÜNCELLEME METODU ---
+
     public void cihazGuncelle(int id, String marka, String seri, String ariza) {
         Cihaz c = cihazBul(id);
         if (c != null) {
@@ -95,7 +144,11 @@ public class ServisYoneticisi {
         }
     }
 
+    // ==========================================================
     // --- SERVİS KAYDI İŞLEMLERİ ---
+    // ==========================================================
+
+    // EKSİK METOT GERİ EKLENDİ (Servis Oluşturma için)
     public void yeniServisKaydiOlustur(ServisKaydi kayit) {
         if (kayit == null) return;
         tumKayitlar.ekle(kayit);
@@ -104,7 +157,7 @@ public class ServisYoneticisi {
         }
     }
 
-    // Bağlı liste yapısını TableView için düz listeye çevirir
+    // EKSİK METOT GERİ EKLENDİ (Servis Listesi için)
     public List<ServisKaydi> servisKayitlariniGetir() {
         List<ServisKaydi> liste = new ArrayList<>();
         ServisKaydi temp = tumKayitlar.getHead();
@@ -123,7 +176,9 @@ public class ServisYoneticisi {
         return is;
     }
 
+    // ==========================================================
     // --- DOSYA İŞLEMLERİ (Persistence) ---
+    // ==========================================================
     public void verileriKaydet(String dosyaAdi) {
         try (BufferedWriter w = new BufferedWriter(new FileWriter(dosyaAdi))) {
             musterilerAgaci.dosyayaYaz(w);
@@ -155,6 +210,7 @@ public class ServisYoneticisi {
 
                 switch (p[0]) {
                     case "MUSTERI":
+                        // Buradaki Musteri constructor'ını kontrol edin
                         musteriEkle(new Musteri(Integer.parseInt(p[1]), p[2], p[3], p[4], p[5]));
                         break;
                     case "CIHAZ":
@@ -173,7 +229,9 @@ public class ServisYoneticisi {
         }
     }
 
+    // ==========================================================
     // --- SİLME ---
+    // ==========================================================
     public void musteriSil(int id) {
         musterilerAgaci.sil(id);
     }

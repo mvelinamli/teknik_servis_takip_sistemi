@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+
+<VBox spacing="20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardController">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Kontrol Paneli (Dashboard)" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <VBox styleClass="dashboard-card" prefWidth="200">
+            <Label text="Toplam Müşteri" styleClass="card-title"/>
+            <Label fx:id="lblMusteriSayisi" text="--" styleClass="card-value"/>
+        </VBox>
+
+        <VBox styleClass="dashboard-card" prefWidth="200">
+            <Label text="Kayıtlı Cihaz" styleClass="card-title"/>
+            <Label fx:id="lblCihazSayisi" text="--" styleClass="card-value"/>
+        </VBox>
+
+        <VBox styleClass="dashboard-card-danger" prefWidth="200">
+            <Label text="Servis Kuyruğu" styleClass="card-title-white"/>
+            <Label fx:id="lblServisKuyrugu" text="--" styleClass="card-value-white"/>
+        </VBox>
+
+         <VBox styleClass="dashboard-card" prefWidth="200">
+            <Label text="Tamamlanan Servis" styleClass="card-title"/>
+            <Label fx:id="lblTamamlananServis" text="--" styleClass="card-value"/>
+        </VBox>
+    </HBox>
+
+    <Separator/>
+
+    <Label text="Hızlı İşlemler" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
+
+    <HBox spacing="15">
+        <Button text="➕ Yeni Müşteri/Cihaz Ekle" onAction="#yeniMusteriTikla" styleClass="quick-action-button"/>
+        <Button text="🔧 Servis Kaydı Oluştur" onAction="#yeniServisTikla" styleClass="quick-action-button-action"/>
+        <Button text="📋 Servis Listesini Gör" onAction="#servisListesiTikla" styleClass="quick-action-button"/>
+    </HBox>
+
+    <Separator/>
+
+</VBox>

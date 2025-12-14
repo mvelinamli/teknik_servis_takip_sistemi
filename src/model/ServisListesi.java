@@ -1,13 +1,12 @@
-
 /*
-*   Kuyruk yapısında linked list (first in first out)
-*   Tüm kayıtları tutan bir liste ve tamir sırasını tutan bir kuyruk
+* Kuyruk yapısında linked list (first in first out)
+* Tüm kayıtları tutan bir liste ve tamir sırasını tutan bir kuyruk
 */
 
 package model;
 
 public class ServisListesi {
-    private ServisKaydi head;
+    public ServisKaydi head;
     private ServisKaydi tail;
 
     // Listeye Ekleme (Sona ekler - Enqueue)
@@ -41,6 +40,18 @@ public class ServisListesi {
         return head;
     }
 
+    // --- KRİTİK EKSİKLİK EKLENDİ ---
+    // ServisYoneticisi ve Dashboard için boyutu hesaplar.
+    public int getBoyut() {
+        int sayac = 0;
+        ServisKaydi current = head;
+        while (current != null) {
+            sayac++;
+            current = current.next;
+        }
+        return sayac;
+    }
+
     // ID'ye göre listeden eleman silme
     public void sil(int kayitId) {
         // Liste boşsa
@@ -58,12 +69,18 @@ public class ServisListesi {
         while (temp.next != null) {
             if (temp.next.getKayitId() == kayitId) {
                 // Bağlantıyı atlat (Silme işlemi)
-                temp.next = temp.next.next;
+
+                // Silinen düğümü temp.next'e atıyoruz
+                ServisKaydi silinen = temp.next;
+
+                temp.next = silinen.next; // Bağlantıyı kur
 
                 // Eğer silinen eleman TAIL ise, kuyruğu güncelle
                 if (temp.next == null) {
                     tail = temp;
                 }
+
+                silinen.next = null; // Silinen düğümün bağlantısını kopar
                 return; // Silindi, çık
             }
             temp = temp.next;

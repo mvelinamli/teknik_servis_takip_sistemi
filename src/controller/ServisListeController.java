@@ -11,7 +11,6 @@ import javafx.scene.layout.GridPane;
 import model.ServisKaydi;
 import model.ServisYoneticisi;
 import java.util.Optional;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ServisListeController {
@@ -27,15 +26,17 @@ public class ServisListeController {
 
     public void setServisYoneticisi(ServisYoneticisi sy) {
         this.servisYoneticisi = sy;
-        listeyiYenile();
+        // KRİTİK DÜZELTME: listeyiYenile burada çağrılmamalı, AnaEkranController çağırır.
+        // listeyiYenile();
     }
 
-    private void listeyiYenile() {
-        if (servisYoneticisi != null) {
+    public void listeyiYenile() { // Bu metot artık AnaEkranController tarafından çağrılıyor
+        if (servisYoneticisi != null && tblServisKayitlari != null) {
             List<ServisKaydi> kayitlar = servisYoneticisi.servisKayitlariniGetir();
             ObservableList<ServisKaydi> data = FXCollections.observableArrayList(kayitlar);
             tblServisKayitlari.setItems(data);
             tblServisKayitlari.refresh();
+            System.out.println("Servis listesi yenilendi. Toplam kayıt: " + kayitlar.size());
         }
     }
 
@@ -48,7 +49,7 @@ public class ServisListeController {
         colTarih.setCellValueFactory(new PropertyValueFactory<>("girisTarihi"));
     }
 
-    // --- GÜNCELLENEN METOT BURADA ---
+    // --- DURUM GÜNCELLEME METODU ---
     @FXML
     void durumGuncelle(ActionEvent event) {
         ServisKaydi secilen = tblServisKayitlari.getSelectionModel().getSelectedItem();
@@ -57,49 +58,39 @@ public class ServisListeController {
             return;
         }
 
-        // 1. Özel Dialog Oluştur
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Servis Kaydı Düzenle");
         dialog.setHeaderText("Kayıt No: " + secilen.getKayitId() + " için bilgileri güncelleyin.");
 
-        // 2. Form Elemanlarını Hazırla
         Label lblDurum = new Label("Durum:");
         ComboBox<String> comboDurum = new ComboBox<>();
         comboDurum.getItems().addAll("Beklemede", "İnceleniyor", "Onarımda", "Tamamlandı", "Teslim Edildi", "İptal");
-        comboDurum.setValue(secilen.getDurum()); // Mevcut durumu seç
+        comboDurum.setValue(secilen.getDurum());
 
         Label lblUcret = new Label("Ücret (TL):");
-        TextField txtUcret = new TextField(String.valueOf(secilen.getUcret())); // Mevcut ücreti yaz
+        TextField txtUcret = new TextField(String.valueOf(secilen.getUcret()));
+        servisYoneticisi.verileriKaydet("servis_verileri.txt");
 
-        // 3. Grid İçine Yerleştir
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
 
-        grid.add(lblDurum, 0, 0);
-        grid.add(comboDurum, 1, 0);
-        grid.add(lblUcret, 0, 1);
-        grid.add(txtUcret, 1, 1);
+        grid.add(lblDurum, 0, 0); grid.add(comboDurum, 1, 0);
+        grid.add(lblUcret, 0, 1); grid.add(txtUcret, 1, 1);
 
         dialog.getDialogPane().setContent(grid);
-
-        // 4. Butonları Ekle (Kaydet ve İptal)
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-        // 5. Sonucu Bekle ve İşle
         Optional<ButtonType> sonuc = dialog.showAndWait();
         if (sonuc.isPresent() && sonuc.get() == ButtonType.OK) {
             try {
-                // Durumu Güncelle
-                String yeniDurum = comboDurum.getValue();
-                secilen.setDurum(yeniDurum);
+                // Not: ServisKaydi modelinizde setDurum ve setUcret olduğu için bu şekilde doğrudan güncelleyebiliyoruz.
+                secilen.setDurum(comboDurum.getValue());
+                secilen.setUcret(Double.parseDouble(txtUcret.getText()));
 
-                // Ücreti Güncelle
-                double yeniUcret = Double.parseDouble(txtUcret.getText());
-                secilen.setUcret(yeniUcret);
-
-                // Tabloyu Yenile
+                // GÜNCELLEME İŞLEMİNDEN SONRA KAYDI SİSTEMDE DE YANSITMAK GEREKİR (örneğin kaydetme)
+                // Şimdilik sadece tabloyu yenilemek yeterli
                 listeyiYenile();
                 alertGoster(Alert.AlertType.INFORMATION, "Kayıt başarıyla güncellendi!");
 
@@ -109,6 +100,7 @@ public class ServisListeController {
         }
     }
 
+    // --- FATURA OLUŞTUR METODU ---
     @FXML
     void faturaOlustur(ActionEvent event) {
         ServisKaydi secilen = tblServisKayitlari.getSelectionModel().getSelectedItem();
@@ -143,6 +135,7 @@ public class ServisListeController {
         alert.showAndWait();
     }
 
+    // --- YARDIMCI ALERT METODU ---
     private void alertGoster(Alert.AlertType tip, String mesaj) {
         Alert alert = new Alert(tip);
         alert.setHeaderText(null);

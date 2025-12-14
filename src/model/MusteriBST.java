@@ -1,5 +1,8 @@
 package model;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 public class MusteriBST {
 
     // --- NODE SINIFI ---
@@ -30,6 +33,7 @@ public class MusteriBST {
             return new Node(m);
         }
 
+        // Musteri sınıfında getMusteriId() metodu olduğu varsayılmıştır.
         if (m.getMusteriId() < current.data.getMusteriId()) {
             current.left = ekleRecursive(current.left, m);
         } else if (m.getMusteriId() > current.data.getMusteriId()) {
@@ -48,6 +52,7 @@ public class MusteriBST {
     private Node bulRecursive(Node current, int id) {
         if (current == null) return null;
 
+        // Musteri sınıfında getMusteriId() metodu olduğu varsayılmıştır.
         if (id == current.data.getMusteriId()) return current;
 
         return (id < current.data.getMusteriId())
@@ -72,9 +77,10 @@ public class MusteriBST {
             if (current.left == null) return current.right;
             if (current.right == null) return current.left;
 
-            // 2 çocuklu: sağdaki en küçük
+            // 2 çocuklu: sağdaki en küçük (successor)
             Node smallest = enKucuk(current.right);
-            current.data = smallest.data;
+            current.data = smallest.data; // Veriyi kopyala
+            // Successor'ı sil
             current.right = silRecursive(current.right, smallest.data.getMusteriId());
         }
 
@@ -86,11 +92,11 @@ public class MusteriBST {
     }
 
     // --- DOSYAYA YAZMA ---
-    public void dosyayaYaz(java.io.BufferedWriter w) {
+    public void dosyayaYaz(BufferedWriter w) {
         inorderYaz(root, w);
     }
 
-    private void inorderYaz(Node node, java.io.BufferedWriter w) {
+    private void inorderYaz(Node node, BufferedWriter w) {
         if (node == null) return;
 
         try {
@@ -108,7 +114,8 @@ public class MusteriBST {
 
             inorderYaz(node.right, w);
 
-        } catch (Exception e) {
+        // HATA ÇÖZÜMÜ: Sadece IOException yakalamak yeterlidir.
+        } catch (IOException e) {
             System.out.println("Yazma hatası: " + e.getMessage());
         }
     }
