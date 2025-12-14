@@ -3,34 +3,56 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="20" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MusteriEkleController">
-    <children>
-        <Label text="Yeni Müşteri Kaydı" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
-        
-        <GridPane hgap="15" vgap="15">
-            <columnConstraints>
-                <ColumnConstraints prefWidth="100"/>
-                <ColumnConstraints hgrow="ALWAYS"/>
-            </columnConstraints>
-            
-            <children>
-                <Label text="Ad Soyad:" GridPane.rowIndex="0"/>
-                <TextField fx:id="txtAdSoyad" promptText="Örn: İsmail Arda" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-                
-                <Label text="Telefon:" GridPane.rowIndex="1"/>
-                <TextField fx:id="txtTelefon" promptText="05xx..." GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-                
-                <Label text="E-Posta:" GridPane.rowIndex="2"/>
-                <TextField fx:id="txtMail" promptText="mail@adres.com" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-                
-                <Label text="Adres:" GridPane.rowIndex="3"/>
-                <TextArea fx:id="txtAdres" prefHeight="100" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-            </children>
-        </GridPane>
+<ScrollPane fitToWidth="true" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MusteriEkleController">
+    <content>
+        <VBox spacing="20" style="-fx-background-color: white; -fx-padding: 20;">
 
-        <HBox alignment="CENTER_RIGHT" spacing="10">
-            <Button text="İptal" style="-fx-background-color: #95a5a6; -fx-text-fill: white;"/>
-            <Button fx:id="btnKaydet" text="Müşteriyi Sisteme Kaydet" onAction="#musteriKaydet" styleClass="btn-success"/>
-        </HBox>
-    </children>
-</VBox>
+            <Label text="1. Müşteri Bilgileri" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2980b9;"/>
+            <GridPane hgap="15" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints prefWidth="120"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+                <children>
+                    <Label text="Ad Soyad:" GridPane.rowIndex="0"/>
+                    <TextField fx:id="txtAdSoyad" promptText="Örn: Ahmet Yılmaz" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                    <Label text="Telefon:" GridPane.rowIndex="1"/>
+                    <TextField fx:id="txtTelefon" promptText="05xx..." GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="E-Posta:" GridPane.rowIndex="2"/>
+                    <TextField fx:id="txtMail" promptText="mail@ornek.com" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <Label text="Adres:" GridPane.rowIndex="3"/>
+                    <TextArea fx:id="txtAdres" prefHeight="60" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                </children>
+            </GridPane>
+
+            <Separator/>
+
+            <Label text="2. Cihaz Bilgileri" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #e67e22;"/>
+            <GridPane hgap="15" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints prefWidth="120"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+                <children>
+                    <Label text="Marka / Model:" GridPane.rowIndex="0"/>
+                    <TextField fx:id="txtMarka" promptText="Örn: iPhone 11" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                    <Label text="Seri No:" GridPane.rowIndex="1"/>
+                    <TextField fx:id="txtSeriNo" promptText="Cihaz Seri Numarası" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="Arıza Tanımı:" GridPane.rowIndex="2"/>
+                    <TextArea fx:id="txtAriza" prefHeight="60" promptText="Ekran kırık, şarj almıyor vb." GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                </children>
+            </GridPane>
+
+            <HBox alignment="CENTER_RIGHT" spacing="15" style="-fx-padding: 20 0 0 0;">
+                <Button text="Temizle" onAction="#formuTemizle" style="-fx-background-color: #95a5a6; -fx-text-fill: white;"/>
+                <Button text="KAYDI TAMAMLA" onAction="#tamKayitOlustur" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;"/>
+            </HBox>
+
+        </VBox>
+    </content>
+</ScrollPane>

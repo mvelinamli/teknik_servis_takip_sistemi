@@ -15,25 +15,32 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         try {
-            // FXML Yükleyici
+            // 1. Uygulama açılırken verileri yükle
+            servisYoneticisi.verileriYukle("veriler.txt");
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ana_ekran.fxml"));
             Parent root = loader.load();
 
-            // Controller'ı al ve veriyi enjekte et
             AnaEkranController controller = loader.getController();
             if (controller != null) {
                 controller.setServisYoneticisi(servisYoneticisi);
-                System.out.println("Sistem: Controller ve Model bağlantısı kuruldu.");
             }
 
             stage.setTitle("Teknik Servis Takip Sistemi");
             stage.setScene(new Scene(root));
             stage.show();
-            
+
         } catch (Exception e) {
-            System.err.println("Uygulama başlatılırken hata oluştu:");
             e.printStackTrace();
         }
+    }
+
+    // BU METOT ÇOK ÖNEMLİ: Uygulama kapanırken (X tuşuna basınca) çalışır
+    @Override
+    public void stop() throws Exception {
+        servisYoneticisi.verileriKaydet("veriler.txt");
+        System.out.println("Sistem kapatılıyor, veriler kaydedildi.");
+        super.stop();
     }
 
     public static void main(String[] args) {

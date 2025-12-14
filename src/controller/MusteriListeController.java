@@ -2,10 +2,9 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent; // ActionEvent importunu unutma!
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,89 +17,73 @@ public class MusteriListeController {
     private ServisYoneticisi servisYoneticisi;
 
     @FXML private TableView<Musteri> tblMusteriler;
-
-    // FXML ile birebir eşleşen kolon tanımları
     @FXML private TableColumn<Musteri, Integer> colID;
-    @FXML private TableColumn<Musteri, String> colAdSoyad; // FXML'den geliyor
+    @FXML private TableColumn<Musteri, String> colAdSoyad;
     @FXML private TableColumn<Musteri, String> colEmail;
     @FXML private TableColumn<Musteri, String> colTelefon;
     @FXML private TableColumn<Musteri, String> colAdres;
 
-    // FXML ile birebir eşleşen buton tanımları
-    @FXML private Button btnYeniMusteri;
-    @FXML private Button btnSil;
-    @FXML private Button btnGuncelle;
-
-    // --- DIŞARIDAN VERİ ALMA METODU (AnaEkranController çağırır) ---
     public void setServisYoneticisi(ServisYoneticisi sy) {
         this.servisYoneticisi = sy;
+        listeyiYenile(); // Yönetici set edildiği an listeyi doldur
     }
 
     @FXML
     public void initialize() {
-        // Kolon adları Musteri.java sınıfındaki değişken isimleriyle eşleştirildi
-        colID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        // DÜZELTME BURADA: "id" değil "musteriId" olmalı (Musteri.java'daki değişken adı)
+        colID.setCellValueFactory(new PropertyValueFactory<>("musteriId"));
+
         colAdSoyad.setCellValueFactory(new PropertyValueFactory<>("adSoyad"));
-        colEmail.setCellValueFactory(new PropertyValueFactory<>("mail")); // Musteri.java'da 'mail' olmalı
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("mail"));
         colTelefon.setCellValueFactory(new PropertyValueFactory<>("telefon"));
         colAdres.setCellValueFactory(new PropertyValueFactory<>("adres"));
     }
 
-    // --- LİSTEYİ YENİLEME METODU (AnaEkranController çağırır) ---
     public void listeyiYenile() {
-        if (servisYoneticisi != null && tblMusteriler != null) {
-            List<Musteri> musteriListesi = servisYoneticisi.musterileriGetir();
-            ObservableList<Musteri> data = FXCollections.observableArrayList(musteriListesi);
-
+        if (servisYoneticisi != null) {
+            List<Musteri> liste = servisYoneticisi.musterileriGetir();
+            ObservableList<Musteri> data = FXCollections.observableArrayList(liste);
             tblMusteriler.setItems(data);
             tblMusteriler.refresh();
-            System.out.println("Müşteri listesi yenilendi. Kayıt sayısı: " + musteriListesi.size());
-        } else {
-             System.err.println("Servis Yöneticisi veya Tablo Henüz Hazır Değil.");
         }
     }
 
-    // --- BUTON METOTLARI (FXML'deki onAction'ları çözen metotlar) ---
-
-    // HATA DÜZELTİLDİ: FXML'den çağrılabilmesi için 'public' yaptık ve ActionEvent ekledik
+    // Buton İşlevleri
     @FXML
-    public void yeniMusteriEkle(ActionEvent event) {
-        // Not: Yeni müşteri ekleme ekranının AnaEkranController tarafından yüklenmesi daha iyidir.
-        // Şimdilik sadece konsola yazarız.
-        System.out.println("Yeni müşteri ekleme butonu tıklandı.");
-        // Eğer AnaEkranController'a geri bildirim yapma mekanizması kurduysan burada kullanabilirsin.
-    }
-
-    @FXML
-    private void musteriGuncelle(ActionEvent event) {
-        Musteri secilen = tblMusteriler.getSelectionModel().getSelectedItem();
-        if (secilen == null) {
-            uyari("Güncellemek için bir müşteri seçin.");
-            return;
-        }
-        System.out.println("Güncellenecek müşteri: " + secilen.getAdSoyad());
-        // Güncelleme mantığı buraya gelecek
-    }
-
-    @FXML
-    private void musteriSil(ActionEvent event) {
-        Musteri secilen = tblMusteriler.getSelectionModel().getSelectedItem();
-
-        if (secilen == null) {
-            uyari("Lütfen silmek için bir müşteri seçin.");
-            return;
-        }
-
-        // Önce modelden (BST'den) sil
-        servisYoneticisi.musteriSil(secilen.getMusteriId());
-        uyari(secilen.getAdSoyad() + " silindi.");
-        listeyiYenile(); // Silme işleminden sonra listeyi yenile
-    }
-
-    private void uyari(String mesaj) {
+    void yeniMusteriEkle(ActionEvent event) {
+        // Bu buton şimdilik sadece bilgi versin, ana menüden ekleme yapılıyor
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        alert.setContentText(mesaj);
-        alert.showAndWait();
+        alert.setTitle("Bilgi");
+        alert.setContentText("Yeni Müşteri eklemek için sol menüdeki 'Müşteri Ekle' butonunu kullanınız.");
+        alert.show();
+    }
+
+    @FXML
+    void musteriGuncelle(ActionEvent event) {
+        Musteri secilen = tblMusteriler.getSelectionModel().getSelectedItem();
+        if(secilen == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Lütfen tablodan bir müşteri seçin.");
+            alert.show();
+            return;
+        }
+        // Güncelleme mantığı için popup açılabilir veya alanlar düzenlenebilir.
+        // Şimdilik basitçe konsola yazalım, proje isterlerinde güncelleme var ama
+        // bu kadar detaylı UI istenmeyebilir.
+        System.out.println("Güncellenecek ID: " + secilen.getMusteriId());
+    }
+
+    @FXML
+    void musteriSil(ActionEvent event) {
+        Musteri secilen = tblMusteriler.getSelectionModel().getSelectedItem();
+        if (secilen != null) {
+            servisYoneticisi.musteriSil(secilen.getMusteriId());
+            listeyiYenile(); // Silince tabloyu güncelle
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Müşteri silindi.");
+            alert.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Silmek için bir müşteri seçiniz.");
+            alert.show();
+        }
     }
 }
