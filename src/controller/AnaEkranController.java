@@ -52,35 +52,40 @@ public class AnaEkranController {
             FXMLLoader loader = new FXMLLoader(fxmlUrl);
             Node node = loader.load();
 
-            // YÜKLENEN CONTROLLER'A ERİŞİM VE KRİTİK İŞLEMLER
+            // YÜKLENEN CONTROLLER'A ERİŞİM VE VERİ AKTARIMI
             Object controller = loader.getController();
 
-            // Genel veri atama işlemi
+            // 1. Müşteri Ekleme Ekranı
             if (controller instanceof MusteriEkleController) {
                 ((MusteriEkleController) controller).setServisYoneticisi(this.servisYoneticisi);
-            } else if (controller instanceof CihazEkleController) {
+            }
+            // 2. Cihaz Ekleme Ekranı
+            else if (controller instanceof CihazEkleController) {
                 ((CihazEkleController) controller).setServisYoneticisi(this.servisYoneticisi);
-            } else if (controller instanceof ServisOlusturController) {
+            }
+            // 3. Servis Oluşturma Ekranı
+            else if (controller instanceof ServisOlusturController) {
                 ((ServisOlusturController) controller).setServisYoneticisi(this.servisYoneticisi);
             }
 
-            // --- KRİTİK LİSTE YENİLEME TETİKLEYİCİSİ BURAYA EKLENİYOR ---
+            // --- LİSTE EKRANLARI ---
 
-            // 1. Müşteri Listesini Güncelleme
-            if (controller instanceof MusteriListeController) {
+            // 4. Müşteri Listesi
+            else if (controller instanceof MusteriListeController) {
                 MusteriListeController listController = (MusteriListeController) controller;
                 listController.setServisYoneticisi(this.servisYoneticisi);
-                listController.listeyiYenile(); // KRİTİK ÇAĞRI
+                listController.listeyiYenile();
             }
-
-            // 2. Cihaz Listesini Güncelleme
+            // 5. Cihaz Listesi
             else if (controller instanceof CihazListeController) {
                 CihazListeController listController = (CihazListeController) controller;
                 listController.setServisYoneticisi(this.servisYoneticisi);
-                listController.listeyiYenile(); // KRİTİK ÇAĞRI
+                listController.listeyiYenile();
             }
-
-            // ---------------------------------------------------------------
+            // 6. Servis Arşivi (BURASI EKSİKTİ, ŞİMDİ EKLENDİ ✅)
+            else if (controller instanceof ServisListeController) {
+                ((ServisListeController) controller).setServisYoneticisi(this.servisYoneticisi);
+            }
 
             // ContainerPane içeriğini değiştir
             containerPane.getChildren().setAll(node);
