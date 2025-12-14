@@ -8,12 +8,14 @@
         <VBox prefWidth="220" styleClass="sidebar" spacing="15">
             <children>
                 <Label text="TEKNİK SERVİS" style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 0 0 20 0;"/>
-                
-                <Button text="Müşteri Ekle" onAction="#musteriEkleTikla" styleClass="menu-button" maxWidth="Infinity"/>
+
+                <Button text="Müşteri &amp; Cihaz Ekle" onAction="#musteriEkleTikla" styleClass="menu-button" maxWidth="Infinity"/>
                 <Button text="Müşteri Listesi" onAction="#musteriListeTikla" styleClass="menu-button" maxWidth="Infinity"/>
+
                 <Separator style="-fx-opacity: 0.3;"/>
-                <Button text="Cihaz Ekle" onAction="#cihazEkleTikla" styleClass="menu-button" maxWidth="Infinity"/>
+
                 <Button text="Cihaz Listesi" onAction="#cihazListeTikla" styleClass="menu-button" maxWidth="Infinity"/>
+
                 <Separator style="-fx-opacity: 0.3;"/>
                 <Button text="Servis Oluştur" onAction="#servisOlusturTikla" styleClass="menu-button" maxWidth="Infinity"/>
                 <Button text="Servis Arşivi" onAction="#servisListeTikla" styleClass="menu-button" maxWidth="Infinity"/>

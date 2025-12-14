@@ -18,6 +18,7 @@
                 </TableView>
                 <HBox spacing="10" alignment="CENTER_RIGHT">
                     <children>
+                        <Button text="Cihaz Bilgilerini Güncelle" onAction="#cihazGuncelle" style="-fx-background-color: #FFA500; -fx-text-fill: white;"/>
                         <Button text="Cihazı Sil" onAction="#cihazSil" style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
                     </children>
                 </HBox>

@@ -4,12 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import model.Musteri;
 import model.ServisYoneticisi;
+import java.util.Optional;
 import java.util.List;
 
 public class MusteriListeController {
@@ -25,14 +25,12 @@ public class MusteriListeController {
 
     public void setServisYoneticisi(ServisYoneticisi sy) {
         this.servisYoneticisi = sy;
-        listeyiYenile(); // Yönetici set edildiği an listeyi doldur
+        listeyiYenile();
     }
 
     @FXML
     public void initialize() {
-        // DÜZELTME BURADA: "id" değil "musteriId" olmalı (Musteri.java'daki değişken adı)
         colID.setCellValueFactory(new PropertyValueFactory<>("musteriId"));
-
         colAdSoyad.setCellValueFactory(new PropertyValueFactory<>("adSoyad"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("mail"));
         colTelefon.setCellValueFactory(new PropertyValueFactory<>("telefon"));
@@ -48,28 +46,48 @@ public class MusteriListeController {
         }
     }
 
-    // Buton İşlevleri
-    @FXML
-    void yeniMusteriEkle(ActionEvent event) {
-        // Bu buton şimdilik sadece bilgi versin, ana menüden ekleme yapılıyor
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Bilgi");
-        alert.setContentText("Yeni Müşteri eklemek için sol menüdeki 'Müşteri Ekle' butonunu kullanınız.");
-        alert.show();
-    }
-
     @FXML
     void musteriGuncelle(ActionEvent event) {
         Musteri secilen = tblMusteriler.getSelectionModel().getSelectedItem();
         if(secilen == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Lütfen tablodan bir müşteri seçin.");
-            alert.show();
+            alertGoster("Uyarı", "Lütfen güncellemek için bir müşteri seçin.");
             return;
         }
-        // Güncelleme mantığı için popup açılabilir veya alanlar düzenlenebilir.
-        // Şimdilik basitçe konsola yazalım, proje isterlerinde güncelleme var ama
-        // bu kadar detaylı UI istenmeyebilir.
-        System.out.println("Güncellenecek ID: " + secilen.getMusteriId());
+
+        // Açılır pencere (Dialog) oluştur
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Müşteri Güncelleme");
+        dialog.setHeaderText("Müşteri ID: " + secilen.getMusteriId());
+
+        // Form Elemanları
+        TextField txtAd = new TextField(secilen.getAdSoyad());
+        TextField txtTel = new TextField(secilen.getTelefon());
+        TextField txtMail = new TextField(secilen.getMail());
+        TextField txtAdres = new TextField(secilen.getAdres());
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10); grid.setVgap(10);
+        grid.add(new Label("Ad Soyad:"), 0, 0); grid.add(txtAd, 1, 0);
+        grid.add(new Label("Telefon:"), 0, 1);  grid.add(txtTel, 1, 1);
+        grid.add(new Label("E-Posta:"), 0, 2);  grid.add(txtMail, 1, 2);
+        grid.add(new Label("Adres:"), 0, 3);    grid.add(txtAdres, 1, 3);
+
+        dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        // Kullanıcı OK'a basarsa güncelle
+        Optional<ButtonType> sonuc = dialog.showAndWait();
+        if (sonuc.isPresent() && sonuc.get() == ButtonType.OK) {
+            servisYoneticisi.musteriGuncelle(
+                    secilen.getMusteriId(),
+                    txtAd.getText(),
+                    txtTel.getText(),
+                    txtAdres.getText(),
+                    txtMail.getText()
+            );
+            listeyiYenile();
+            alertGoster("Başarılı", "Müşteri bilgileri güncellendi.");
+        }
     }
 
     @FXML
@@ -77,13 +95,18 @@ public class MusteriListeController {
         Musteri secilen = tblMusteriler.getSelectionModel().getSelectedItem();
         if (secilen != null) {
             servisYoneticisi.musteriSil(secilen.getMusteriId());
-            listeyiYenile(); // Silince tabloyu güncelle
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Müşteri silindi.");
-            alert.show();
+            listeyiYenile();
+            alertGoster("Bilgi", "Müşteri silindi.");
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Silmek için bir müşteri seçiniz.");
-            alert.show();
+            alertGoster("Uyarı", "Silmek için bir müşteri seçiniz.");
         }
+    }
+
+    private void alertGoster(String baslik, String mesaj) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(baslik);
+        alert.setHeaderText(null);
+        alert.setContentText(mesaj);
+        alert.showAndWait();
     }
 }
