@@ -17,7 +17,6 @@
                 <Button text="Cihaz Listesi" onAction="#cihazListeTikla" styleClass="menu-button" maxWidth="Infinity"/>
 
                 <Separator style="-fx-opacity: 0.3;"/>
-                <Button text="Servis Oluştur" onAction="#servisOlusturTikla" styleClass="menu-button" maxWidth="Infinity"/>
                 <Button text="Servis Arşivi" onAction="#servisListeTikla" styleClass="menu-button" maxWidth="Infinity"/>
             </children>
         </VBox>
