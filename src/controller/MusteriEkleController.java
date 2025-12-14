@@ -3,58 +3,76 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import model.Cihaz;
 import model.Musteri;
+import model.ServisKaydi;
 import model.ServisYoneticisi;
 
 public class MusteriEkleController {
 
     private ServisYoneticisi servisYoneticisi;
 
-    // FXML'deki fx:id'ler ile birebir aynı olmalı
+    // --- Müşteri Alanları ---
     @FXML private TextField txtAdSoyad;
     @FXML private TextField txtTelefon;
     @FXML private TextField txtMail;
     @FXML private TextArea txtAdres;
-    @FXML private Button btnKaydet;
+
+    // --- Cihaz Alanları (Yeni Eklendi) ---
+    @FXML private TextField txtMarka;
+    @FXML private TextField txtSeriNo;
+    @FXML private TextArea txtAriza;
 
     public void setServisYoneticisi(ServisYoneticisi sy) {
         this.servisYoneticisi = sy;
     }
 
     @FXML
-    void musteriKaydet(ActionEvent event) {
-        // 1. Verileri oku
-        String ad = txtAdSoyad.getText();
-        String tel = txtTelefon.getText();
-        String mail = txtMail.getText();
-        String adres = txtAdres.getText();
-
-        // 2. Boşluk kontrolü
-        if (ad.isEmpty() || tel.isEmpty()) {
-            alertGoster(Alert.AlertType.WARNING, "Eksik Bilgi", "Ad ve Telefon alanları boş bırakılamaz.");
+    void tamKayitOlustur(ActionEvent event) {
+        if (servisYoneticisi == null) {
+            alertGoster(Alert.AlertType.ERROR, "Hata", "Sistem hatası: Yönetici yüklenmedi.");
             return;
         }
 
-        // 3. Yeni müşteri nesnesi oluştur
-        // (Rastgele bir ID atıyoruz, BST kendi içinde ID'ye göre sıralayacak)
-        int yeniId = (int)(Math.random() * 10000);
-        Musteri yeniMusteri = new Musteri(yeniId, ad, tel, adres, mail);
+        // 1. Zorunlu Alan Kontrolü
+        if (txtAdSoyad.getText().isEmpty() || txtTelefon.getText().isEmpty() || txtMarka.getText().isEmpty()) {
+            alertGoster(Alert.AlertType.WARNING, "Eksik Bilgi", "Lütfen Ad, Telefon ve Cihaz Marka bilgilerini giriniz.");
+            return;
+        }
 
-        // 4. Servis yöneticisine ekle
-        if (servisYoneticisi != null) {
-            servisYoneticisi.musteriEkle(yeniMusteri);
-            alertGoster(Alert.AlertType.INFORMATION, "Başarılı", ad + " isimli müşteri sisteme eklendi.\nID: " + yeniId);
-            formuTemizle();
-        } else {
-            System.err.println("Hata: Servis Yoneticisi bağlı değil!");
+        try {
+            // 2. Müşteri Oluştur (ID Rastgele)
+            int musteriId = (int)(Math.random() * 100000);
+            Musteri m = new Musteri(musteriId, txtAdSoyad.getText(), txtTelefon.getText(), txtAdres.getText(), txtMail.getText());
+            servisYoneticisi.musteriEkle(m);
+
+            // 3. Cihaz Oluştur (Müşteri ID'sine bağlı)
+            int cihazId = (int)(Math.random() * 100000);
+            Cihaz c = new Cihaz(cihazId, txtMarka.getText(), txtSeriNo.getText(), txtAriza.getText(), musteriId);
+            servisYoneticisi.cihazEkle(c);
+
+            // 4. Servis Kaydı Oluştur (Otomatik 'Beklemede')
+            ServisKaydi k = new ServisKaydi(cihazId, "Beklemede");
+            // Başlangıç ücreti 0
+            k.setUcret(0.0);
+            servisYoneticisi.yeniServisKaydiOlustur(k);
+
+            // 5. Başarılı Mesajı
+            alertGoster(Alert.AlertType.INFORMATION, "İşlem Başarılı",
+                    "Kayıt Tamamlandı!\nMüşteri: " + m.getAdSoyad() + "\nCihaz: " + c.getMarkaModel() + "\nDurum: Beklemede");
+
+            formuTemizle(null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            alertGoster(Alert.AlertType.ERROR, "Hata", "Kayıt sırasında bir hata oluştu: " + e.getMessage());
         }
     }
 
-    private void formuTemizle() {
-        txtAdSoyad.clear();
-        txtTelefon.clear();
-        txtMail.clear();
-        txtAdres.clear();
+    @FXML
+    void formuTemizle(ActionEvent event) {
+        txtAdSoyad.clear(); txtTelefon.clear(); txtMail.clear(); txtAdres.clear();
+        txtMarka.clear(); txtSeriNo.clear(); txtAriza.clear();
     }
 
     private void alertGoster(Alert.AlertType tip, String baslik, String mesaj) {

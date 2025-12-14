@@ -47,6 +47,18 @@ public class ServisYoneticisi {
         inorderMusteri(node.right, out);
     }
 
+    // --- EKSİK OLAN MÜŞTERİ GÜNCELLEME METODU ---
+    public void musteriGuncelle(int id, String yeniAd, String yeniTel, String yeniAdres, String yeniMail) {
+        Musteri m = musteriBul(id);
+        if (m != null) {
+            m.setAdSoyad(yeniAd);
+            m.setTelefon(yeniTel);
+            m.setAdres(yeniAdres);
+            m.setMail(yeniMail);
+            System.out.println("Müşteri güncellendi ID: " + id);
+        }
+    }
+
     // --- CİHAZ İŞLEMLERİ ---
     public void cihazEkle(Cihaz c) {
         if (c != null) {
@@ -70,6 +82,17 @@ public class ServisYoneticisi {
         inorderCihaz(node.sol, out);
         out.add(node);
         inorderCihaz(node.sag, out);
+    }
+
+    // --- EKSİK OLAN CİHAZ GÜNCELLEME METODU ---
+    public void cihazGuncelle(int id, String marka, String seri, String ariza) {
+        Cihaz c = cihazBul(id);
+        if (c != null) {
+            c.setMarkaModel(marka);
+            c.setSeriNo(seri);
+            c.setArizaTanimi(ariza);
+            System.out.println("Cihaz güncellendi ID: " + id);
+        }
     }
 
     // --- SERVİS KAYDI İŞLEMLERİ ---
@@ -109,7 +132,7 @@ public class ServisYoneticisi {
             ServisKaydi temp = tumKayitlar.getHead();
             while (temp != null) {
                 String s = "KAYIT;" + temp.getKayitId() + ";" + temp.getCihazId() + ";" +
-                           temp.getDurum() + ";" + temp.getUcret();
+                        temp.getDurum() + ";" + temp.getUcret();
                 w.write(s);
                 w.newLine();
                 temp = temp.next;
@@ -150,7 +173,7 @@ public class ServisYoneticisi {
         }
     }
 
-    // --- GÜNCELLEME VE SİLME ---
+    // --- SİLME ---
     public void musteriSil(int id) {
         musterilerAgaci.sil(id);
     }

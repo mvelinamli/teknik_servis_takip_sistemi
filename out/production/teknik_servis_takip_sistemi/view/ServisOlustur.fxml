@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ServisOlusturController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    <children>
+        <Label text="Yeni Servis Kaydı" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+        
+        <Label text="Cihaz ID:"/>
+        <TextField fx:id="txtCihazId" promptText="Cihaz ID girin"/>
+        
+        <Label text="Servis Durumu:"/>
+        <ComboBox fx:id="comboDurum" prefWidth="200"/>
+        
+        <Label text="Ücret:"/>
+        <TextField fx:id="txtUcret" promptText="0.00"/>
+        
+        <Button text="Kaydet" onAction="#servisKaydet" prefWidth="100" style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
+    </children>
+</VBox>
